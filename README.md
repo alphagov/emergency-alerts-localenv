@@ -23,6 +23,7 @@ Once this completes and returns to a prompt
     docker-compose up admin -d
 
 # Check that the admin site works
+    docker-compose up admin
 Once this completes and shows waiting for connections, open a local browser and visit http://localhost:6012
 
 # Bring up the govuk container
