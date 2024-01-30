@@ -1,0 +1,16 @@
+#FROM ubuntu:latest
+FROM python:3.9.16
+WORKDIR /build
+COPY /doadminbuild.sh /build/
+COPY /environment.sh /build/
+COPY /update-packages.sh /build/
+COPY /preinstall-npm.sh /build/
+ADD repos /build/repos
+RUN /build/preinstall-npm.sh
+RUN cd /build/repos/emergency-alerts-admin && make bootstrap
+RUN cd /build/repos/emergency-alerts-admin && /build/update-packages.sh
+RUN rm -rf /build/repos
+VOLUME /build/repos
+CMD ["/build/doadminbuild.sh","noparameters"]
+EXPOSE 6012
+

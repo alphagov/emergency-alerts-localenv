@@ -1,0 +1,14 @@
+FROM python:3.9.16
+WORKDIR /build
+COPY doapibuild.sh /build/
+COPY environment.sh /build/
+COPY update-packages.sh /build/
+COPY db-init.sh /build/
+ADD repos /build/repos
+RUN cd /build/repos/emergency-alerts-api && make bootstrap
+RUN cd /build/repos/emergency-alerts-api && /build/update-packages.sh
+RUN rm -rf /build/repos
+VOLUME /build/repos
+CMD ["/build/doapibuild.sh","noparameters"]
+EXPOSE 6011
+

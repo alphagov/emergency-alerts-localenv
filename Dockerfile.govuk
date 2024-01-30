@@ -1,0 +1,16 @@
+FROM python:3.9.16
+WORKDIR /build
+COPY dogovukbuild.sh /build/
+COPY environment.sh /build/
+COPY update-packages.sh /build/
+COPY /preinstall-npm.sh /build/
+RUN sed -i "s/export FLASK_APP=application.py/export FLASK_APP=app.py/" /build/environment.sh
+ADD repos /build/repos
+RUN /build/preinstall-npm.sh
+RUN cd /build/repos/emergency-alerts-govuk && make bootstrap
+RUN cd /build/repos/emergency-alerts-govuk && /build/update-packages.sh
+RUN rm -rf /build/repos
+VOLUME /build/repos
+CMD ["/build/dogovukbuild.sh","noparameters"]
+EXPOSE 6017
+
