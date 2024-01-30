@@ -3,10 +3,11 @@
     https://www.docker.com/products/docker-desktop/
 
 # Clone this repository
-    mkdir ~/localenv
-    cd repos
+    git clone git@github.com:alphagov/emergency-alerts-localenv.git
+    cd emergency-alerts-localenv
 
 # Clone all Emergency Alerts repos (not all are listed here)
+    cd repos
     git clone git@github.com:alphagov/emergency-alerts-api.git
     git clone git@github.com:alphagov/emergency-alerts-govuk.git
     git clone git@github.com:alphagov/emergency-alerts-utils.git
