@@ -25,7 +25,7 @@ cd /build/repos/emergency-alerts-api
 cat /build/environment.sh
 . /build/environment.sh && flask db upgrade
 
-cd /build/repos/emergency-alerts-tooling/ansible
+cd /build/repos/emergency-alerts-tooling/ansible/inventory/
 cat local-postgres-setup.yml | sed "s/127.0.0.1/host.docker.internal/" | sed "s/localhost/host.docker.internal/" >/build/local-postgres-setup.yml
 cd /build
 ansible-playbook local-postgres-setup.yml
