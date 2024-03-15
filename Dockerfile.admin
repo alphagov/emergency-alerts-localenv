@@ -6,7 +6,6 @@ COPY /environment.sh /build/
 COPY /update-packages.sh /build/
 COPY /preinstall-npm.sh /build/
 ADD repos /build/repos
-COPY /assets/broadcast-areas.sqlite3 /build/repos/emergency-alerts-admin/app/broadcast_areas/broadcast-areas.sqlite3
 RUN /build/preinstall-npm.sh
 RUN cd /build/repos/emergency-alerts-admin && make bootstrap
 RUN cd /build/repos/emergency-alerts-admin && /build/update-packages.sh

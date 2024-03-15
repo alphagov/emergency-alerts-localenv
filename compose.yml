@@ -24,6 +24,7 @@ services:
       - "6012:6012"
     volumes:
       - ./repos:/build/repos
+      - ./assets/broadcast-areas.sqlite3:/build/repos/emergency-alerts-admin/app/broadcast_areas/broadcast-areas.sqlite3
     networks:
       - emergency-alerts-network
     depends_on:
