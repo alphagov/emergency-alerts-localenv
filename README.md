@@ -15,7 +15,7 @@
     git clone git@github.com:alphagov/emergency-alerts-admin.git
 
 # Download broadcast-areas.sqlite3 from S3
-You can use the emergency-alerts-develpoment account.  You can find it in the bucket prefixed with `eas-app-postcode-bucket-`.
+You can use the emergency-alerts-development account.  You can find it in the bucket prefixed with `eas-app-postcode-bucket-`.
 After you have downloaded the file, place it in the `emergency-alerts-localenv/repos/emergency-alerts-admin/app/broadcast_areas/` directory.
     
 # Bring up the containers
