@@ -1,11 +1,13 @@
-FROM python:3.9.16
+FROM python:3.12.11
+RUN apt update && apt install -y gettext
 WORKDIR /build
 COPY dogovukbuild.sh /build/
 COPY environment.sh /build/
 COPY update-packages.sh /build/
 COPY /preinstall-npm.sh /build/
 RUN sed -i "s/export FLASK_APP=application.py/export FLASK_APP=app.py/" /build/environment.sh
-ADD repos /build/repos
+ADD repos/emergency-alerts-utils /build/repos/emergency-alerts-utils
+ADD repos/emergency-alerts-govuk /build/repos/emergency-alerts-govuk
 RUN /build/preinstall-npm.sh
 RUN cd /build/repos/emergency-alerts-govuk && make bootstrap
 RUN cd /build/repos/emergency-alerts-govuk && /build/update-packages.sh
