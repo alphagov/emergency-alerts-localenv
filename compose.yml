@@ -9,6 +9,8 @@ services:
       - "6011:6011"
     volumes:
       - ./repos:/build/repos
+      - ./environment.sh:/build/environment.sh:ro
+      - ./doapibuild.sh:/build/doapibuild.sh:ro
     networks:
       - emergency-alerts-network
     depends_on:
@@ -24,6 +26,8 @@ services:
       - "6012:6012"
     volumes:
       - ./repos:/build/repos
+      - ./environment.sh:/build/environment.sh:ro
+      - ./doadminbuild.sh:/build/doadminbuild.sh:ro
     networks:
       - emergency-alerts-network
     depends_on:
@@ -39,6 +43,8 @@ services:
       - "6017:6017"
     volumes:
       - ./repos:/build/repos
+      - ./environment.sh:/build/environment.sh:ro
+      - ./dogovukbuild.sh:/build/dogovukbuild.sh:ro
     networks:
       - emergency-alerts-network
     depends_on:
@@ -46,8 +52,11 @@ services:
 
   db-init:
     image: api-build
+    restart: no
     volumes:
       - ./repos:/build/repos
+      - ./db-init.sh:/build/db-init.sh:ro
+      - ./environment.sh:/build/environment.sh:ro
     entrypoint: /build/db-init.sh
     networks:
       - emergency-alerts-network
