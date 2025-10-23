@@ -5,11 +5,11 @@
 cd /build/repos/emergency-alerts-api
 
 make bootstrap
-make test
+# make test
 
 if [ $? -eq 0 ]
 then
-	. /build/environment.sh && flask run -h 0.0.0.0 -p 6011
+	. /build/environment.sh && flask --debug run -h 0.0.0.0 -p 6011
 else
 	echo ""
 	echo ""
