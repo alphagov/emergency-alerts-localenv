@@ -66,6 +66,7 @@ services:
       USER: $USER
     volumes:
       - ./postgres:/docker-entrypoint-initdb.d:ro
+      - pg-data:/var/lib/postgresql/data
     networks:
       - emergency-alerts-network
     ports:
@@ -74,3 +75,6 @@ services:
 networks:
   emergency-alerts-network:
     driver: bridge
+
+volumes:
+  pg-data: {}
