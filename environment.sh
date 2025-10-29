@@ -22,6 +22,7 @@ export ADMIN_ACTION_ALLOW_SELF_APPROVAL=true
 # If running the functional tests on a host - this is the IP of the host from the container's PoV
 # (at least from the perspective of Docker Desktop on macOS)
 export FUNCTIONAL_TEST_IPS='172.18.0.1'
+export FUNCTIONAL_TEST_USER_ID='44153bb8-db31-4cb0-8cee-b909a5482d1a'
 
 export SECRET_KEY=
 export DANGEROUS_SALT=
