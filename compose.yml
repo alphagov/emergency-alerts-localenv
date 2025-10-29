@@ -11,6 +11,7 @@ services:
       - ./repos:/build/repos
       - ./environment.sh:/build/environment.sh:ro
       - ./doapibuild.sh:/build/doapibuild.sh:ro
+      - ./broker:/tmp/.data/broker
     networks:
       - emergency-alerts-network
     depends_on:
@@ -45,6 +46,7 @@ services:
       - ./repos:/build/repos
       - ./environment.sh:/build/environment.sh:ro
       - ./dogovukbuild.sh:/build/dogovukbuild.sh:ro
+      - ./broker:/tmp/.data/broker
     networks:
       - emergency-alerts-network
     depends_on:
