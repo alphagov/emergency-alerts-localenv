@@ -5,8 +5,20 @@ services:
       dockerfile: Dockerfile.api
     image: api-build
     container_name: api-build
+    environment:
+      AWS_ACCESS_KEY_ID: x
+      AWS_SECRET_ACCESS_KEY: x
+      AWS_DEFAULT_REGION: elasticmq
+      AWS_ENDPOINT_URL: http://sqs:9324
+      SQS_QUEUE_BASE_URL: http://sqs:9324
+
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
+      OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
+      OTEL_SERVICE_NAME: api
     ports:
       - "6011:6011"
+    networks:
+      - emergency-alerts-network
     volumes:
       - ./repos:/build/repos
       - ./environment.sh:/build/environment.sh:ro
@@ -29,6 +41,12 @@ services:
       - ./repos:/build/repos
       - ./environment.sh:/build/environment.sh:ro
       - ./doadminbuild.sh:/build/doadminbuild.sh:ro
+    environment:
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
+      OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
+      OTEL_SERVICE_NAME: admin
+      OTEL_PYTHON_DISABLED_INSTRUMENTATIONS: jinja2
+
     networks:
       - emergency-alerts-network
     depends_on:
@@ -42,6 +60,17 @@ services:
     container_name: govuk-build
     ports:
       - "6017:6017"
+    environment:
+      AWS_ACCESS_KEY_ID: x
+      AWS_SECRET_ACCESS_KEY: x
+      AWS_DEFAULT_REGION: elasticmq
+      AWS_ENDPOINT_URL: http://sqs:9324
+
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
+      OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
+      OTEL_SERVICE_NAME: govuk-alerts
+      OTEL_PYTHON_DISABLED_INSTRUMENTATIONS: jinja2
+
     volumes:
       - ./repos:/build/repos
       - ./environment.sh:/build/environment.sh:ro
@@ -52,18 +81,19 @@ services:
     depends_on:
       - api
 
-  db-init:
-    image: api-build
-    restart: no
-    volumes:
-      - ./repos:/build/repos
-      - ./db-init.sh:/build/db-init.sh:ro
-      - ./environment.sh:/build/environment.sh:ro
-    entrypoint: /build/db-init.sh
-    networks:
-      - emergency-alerts-network
-    depends_on:
-      - pg
+  # Uncomment to run first database setup (creates tables and migrations)
+  # db-init:
+  #   image: api-build
+  #   restart: no
+  #   volumes:
+  #     - ./repos:/build/repos
+  #     - ./db-init.sh:/build/db-init.sh:ro
+  #     - ./environment.sh:/build/environment.sh:ro
+  #   entrypoint: /build/db-init.sh
+  #   networks:
+  #     - emergency-alerts-network
+  #   depends_on:
+  #     - pg
 
   pg:
     image: postgis/postgis:14-3.5
@@ -82,6 +112,26 @@ services:
       - emergency-alerts-network
     ports:
       - 5432:5432
+
+  sqs:
+    image: softwaremill/elasticmq:1.6.15
+    ports:
+      - "9324:9324"
+    networks:
+      - emergency-alerts-network
+    volumes:
+      - ./elasticmq.conf:/opt/elasticmq.conf
+
+  jaeger:
+    image: cr.jaegertracing.io/jaegertracing/jaeger:2.11.0
+    environment:
+      - LOG_LEVEL=debug
+    ports:
+      - "16686:16686"   # Jaeger UI
+      - "4317:4317"     # OTLP gRPC
+      - "4318:4318"     # OTLP HTTP
+    networks:
+      - emergency-alerts-network
 
 networks:
   emergency-alerts-network:
