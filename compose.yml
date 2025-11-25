@@ -96,22 +96,24 @@ services:
       - ./broker:/tmp/.data/broker
     networks:
       - emergency-alerts-network
-    depends_on:
-      - api
 
   # Uncomment to run first database setup (creates tables and migrations)
-  # db-init:
-  #   image: api-build
-  #   restart: no
-  #   volumes:
-  #     - ./repos:/build/repos
-  #     - ./db-init.sh:/build/db-init.sh:ro
-  #     - ./environment.sh:/build/environment.sh:ro
-  #   entrypoint: /build/db-init.sh
-  #   networks:
-  #     - emergency-alerts-network
-  #   depends_on:
-  #     - pg
+  db-init:
+    image: localhost/eas-localenv-api
+    user: root
+    restart: no
+    entrypoint: /eas/emergency-alerts-api/db-init.sh
+    volumes:
+      - ./repos/emergency-alerts-api:/eas/emergency-alerts-api
+      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils
+      - ./repos/emergency-alerts-tooling:/eas/emergency-alerts-tooling
+
+      - ./environment.sh:/eas/emergency-alerts-api/environment.sh:ro
+      - ./db-init.sh:/eas/emergency-alerts-api/db-init.sh:ro
+    networks:
+      - emergency-alerts-network
+    depends_on:
+      - pg
 
   pg:
     image: postgis/postgis:14-3.5

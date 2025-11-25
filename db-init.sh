@@ -5,7 +5,7 @@ apt install ansible postgresql-client python3-psycopg2 -y
 
 set -e
 
-. /build/environment.sh
+. /eas/emergency-alerts-api/environment.sh
 
 psql postgresql://postgres:root@host.docker.internal:5432/postgres <<-EOSQL
     CREATE DATABASE $DATABASE;
@@ -25,7 +25,9 @@ END;
 \$\$;
 EOSQL
 
-cd /build/repos/emergency-alerts-api
+cd /eas/emergency-alerts-api
+
+. /venv/emergency-alerts-api/bin/activate
 
 # PostGIS requires superuser to create the extension
 export MASTER_USERNAME='postgres'
@@ -34,7 +36,7 @@ export MASTER_PASSWORD='root'
 flask db upgrade
 echo "Flask done"
 
-cd /build/repos/emergency-alerts-tooling/ansible/environments/development
+cd /eas/emergency-alerts-tooling/ansible/environments/development
 ansible-playbook -e "database_host=postgres database_username=postgres database_password=root email_address=eas.admin@digital.cabinet-office.gov.uk phone_number=07700900111" 02-database-setup-after-migrations.yml
 
 if [ $? -eq 0 ]
