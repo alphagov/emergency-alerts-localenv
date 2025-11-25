@@ -1,4 +1,12 @@
 services:
+  utils:
+    build:
+      context: repos/emergency-alerts-utils
+      dockerfile: Dockerfile.eas-base
+    image: localhost/eas-localenv-base
+    command: ["echo", "This is utils - just a base image that doesn't do anything."]
+    restart: no
+
   api:
     build:
       context: .
