@@ -45,26 +45,30 @@ services:
 
   admin:
     build:
-      context: .
-      dockerfile: Dockerfile.admin
-    image: admin-build
-    container_name: admin-build
+      context: repos/emergency-alerts-admin
+      dockerfile: Dockerfile.eas-admin
+      args:
+        BASE_IMAGE: localhost/eas-localenv-base
+    image: localhost/eas-localenv-admin
+    command:
+      - bash
+      - -c
+      - . /eas/emergency-alerts-admin/environment.sh && bash /start.sh
     ports:
       - "6012:6012"
     volumes:
-      - ./repos:/build/repos
-      - ./environment.sh:/build/environment.sh:ro
-      - ./doadminbuild.sh:/build/doadminbuild.sh:ro
+      - ./repos/emergency-alerts-admin:/eas/emergency-alerts-admin
+      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils
+
+      - ./environment.sh:/eas/emergency-alerts-admin/environment.sh:ro
+      - ./repos/emergency-alerts-admin/scripts/start.sh:/start.sh:ro
     environment:
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
       OTEL_SERVICE_NAME: admin
-      OTEL_PYTHON_DISABLED_INSTRUMENTATIONS: jinja2
 
     networks:
       - emergency-alerts-network
-    depends_on:
-      - api
 
   govuk:
     build:
