@@ -9,11 +9,18 @@ services:
 
   api:
     build:
-      context: .
-      dockerfile: Dockerfile.api
-    image: api-build
-    container_name: api-build
+      context: repos/emergency-alerts-api
+      dockerfile: Dockerfile.eas-api
+      args:
+        BASE_IMAGE: localhost/eas-localenv-base
+    image: localhost/eas-localenv-api
+    command:
+      - bash
+      - -c
+      - . /eas/emergency-alerts-api/environment.sh && bash /start-api.sh
     environment:
+      SERVICE_ACTION: run_api
+
       AWS_ACCESS_KEY_ID: x
       AWS_SECRET_ACCESS_KEY: x
       AWS_DEFAULT_REGION: elasticmq
@@ -28,12 +35,11 @@ services:
     networks:
       - emergency-alerts-network
     volumes:
-      - ./repos:/build/repos
-      - ./environment.sh:/build/environment.sh:ro
-      - ./doapibuild.sh:/build/doapibuild.sh:ro
-      - ./broker:/tmp/.data/broker
-    networks:
-      - emergency-alerts-network
+      - ./repos/emergency-alerts-api:/eas/emergency-alerts-api
+      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils
+
+      - ./environment.sh:/eas/emergency-alerts-api/environment.sh:ro
+      - ./repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro
     depends_on:
       - pg
 
