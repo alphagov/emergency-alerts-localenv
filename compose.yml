@@ -4,7 +4,8 @@ services:
       context: repos/emergency-alerts-utils
       dockerfile: Dockerfile.eas-base
     image: localhost/eas-localenv-base
-    command: ["echo", "This is utils - just a base image that doesn't do anything."]
+    command:
+      ["echo", "This is utils - just a base image that doesn't do anything."]
     restart: no
 
   api:
@@ -66,8 +67,6 @@ services:
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
       OTEL_SERVICE_NAME: api
-    ports:
-      - "6011:6011"
     networks:
       - emergency-alerts-network
     volumes:
