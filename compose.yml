@@ -22,9 +22,9 @@ services:
     environment:
       SERVICE_ACTION: run_api
 
-      AWS_ACCESS_KEY_ID: x
-      AWS_SECRET_ACCESS_KEY: x
-      AWS_DEFAULT_REGION: elasticmq
+      AWS_ACCESS_KEY_ID: aws_key
+      AWS_SECRET_ACCESS_KEY: aws_secret
+      AWS_DEFAULT_REGION: local
       AWS_ENDPOINT_URL: http://sqs:9324
       SQS_QUEUE_BASE_URL: http://sqs:9324
 
@@ -58,9 +58,9 @@ services:
     environment:
       SERVICE_ACTION: run_api
 
-      AWS_ACCESS_KEY_ID: x
-      AWS_SECRET_ACCESS_KEY: x
-      AWS_DEFAULT_REGION: elasticmq
+      AWS_ACCESS_KEY_ID: aws_key
+      AWS_SECRET_ACCESS_KEY: aws_secret
+      AWS_DEFAULT_REGION: local
       AWS_ENDPOINT_URL: http://sqs:9324
       SQS_QUEUE_BASE_URL: http://sqs:9324
 
@@ -119,11 +119,14 @@ services:
     ports:
       - "6017:6017"
     environment:
-      AWS_ACCESS_KEY_ID: x
-      AWS_SECRET_ACCESS_KEY: x
-      AWS_DEFAULT_REGION: elasticmq
+      AWS_ACCESS_KEY_ID: aws_key
+      AWS_SECRET_ACCESS_KEY: aws_secret
+      AWS_DEFAULT_REGION: local
+      AWS_REGION: local
       AWS_ENDPOINT_URL: http://sqs:9324
       SQS_QUEUE_BASE_URL: http://sqs:9324
+
+      AWS_ENDPOINT_URL_S3: http://localhost:9000
 
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
@@ -140,7 +143,7 @@ services:
   # Uncomment to run first database setup (creates tables and migrations)
   db-init:
     image: localhost/eas-localenv-api
-    user: root
+    user: root # Override so we can install packages
     restart: no
     entrypoint: /eas/emergency-alerts-api/db-init.sh
     volumes:
@@ -173,14 +176,41 @@ services:
     ports:
       - 5432:5432
 
+  minio:
+    image: minio/minio:RELEASE.2025-09-07T16-13-09Z
+    ports:
+      - "9000:9000" # S3 API
+      - "9001:9001" # Console UI
+    environment:
+      MINIO_ROOT_USER: aws_key
+      MINIO_ROOT_PASSWORD: aws_secret
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio-data:/data
+
+  # MinIO Client to create bucket automatically
+  minio-bucket-prep:
+    image: minio/mc:RELEASE.2025-08-13T08-35-41Z
+    depends_on:
+      - minio
+    restart: no
+    entrypoint: >
+      /bin/sh -c "
+        sleep 5;
+        mc alias set local http://minio:9000 aws_key aws_secret;
+        mc mb local/local-govuk-alerts;
+        exit 0;
+      "
+
   sqs:
     image: softwaremill/elasticmq:1.6.15
     ports:
-      - "9324:9324"
+      - "9324:9324" # SQS API
+      - "9325:9325" # SQS UI
     networks:
       - emergency-alerts-network
     volumes:
-      - ./elasticmq.conf:/opt/elasticmq.conf
+      - ./elasticmq.conf:/opt/elasticmq.conf:ro
 
   jaeger:
     image: cr.jaegertracing.io/jaegertracing/jaeger:2.11.0
@@ -199,3 +229,4 @@ networks:
 
 volumes:
   pg-data: {}
+  minio-data: {}

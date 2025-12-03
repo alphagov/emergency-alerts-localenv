@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
+#localenv
 
-export HOST='local'
+export HOST='hosted'
 export ENVIRONMENT='local'
 
 export FLASK_APP=application.py
@@ -23,6 +24,7 @@ export ADMIN_ACTION_ALLOW_SELF_APPROVAL=true
 # (at least from the perspective of Docker Desktop on macOS)
 export FUNCTIONAL_TEST_IPS='172.18.0.1'
 export FUNCTIONAL_TEST_USER_ID='44153bb8-db31-4cb0-8cee-b909a5482d1a'
+export GOVUK_ALERTS_S3_BUCKET_NAME='local-govuk-alerts'
 
 export SECRET_KEY=
 export DANGEROUS_SALT=
