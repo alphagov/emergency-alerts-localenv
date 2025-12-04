@@ -31,10 +31,9 @@ services:
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
       OTEL_SERVICE_NAME: api
+      OTEL_METRICS_EXPORTER: none
     ports:
       - "6011:6011"
-    networks:
-      - emergency-alerts-network
     volumes:
       - ./repos/emergency-alerts-api:/eas/emergency-alerts-api
       - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils
@@ -56,8 +55,6 @@ services:
       - -c
       - . /eas/emergency-alerts-api/environment.sh && bash /start-celery.sh
     environment:
-      SERVICE_ACTION: run_api
-
       AWS_ACCESS_KEY_ID: aws_key
       AWS_SECRET_ACCESS_KEY: aws_secret
       AWS_DEFAULT_REGION: local
@@ -67,8 +64,7 @@ services:
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
       OTEL_SERVICE_NAME: api
-    networks:
-      - emergency-alerts-network
+      OTEL_METRICS_EXPORTER: none
     volumes:
       - ./repos/emergency-alerts-api:/eas/emergency-alerts-api
       - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils
@@ -101,9 +97,7 @@ services:
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
       OTEL_SERVICE_NAME: admin
-
-    networks:
-      - emergency-alerts-network
+      OTEL_METRICS_EXPORTER: none
 
   govuk:
     build:
@@ -121,24 +115,23 @@ services:
     environment:
       AWS_ACCESS_KEY_ID: aws_key
       AWS_SECRET_ACCESS_KEY: aws_secret
-      AWS_DEFAULT_REGION: local
+      AWS_DEFAULT_REGION: eu-west-2 # Needs to be representative to let the AWS SDK autodiscover work
       AWS_REGION: local
-      AWS_ENDPOINT_URL: http://sqs:9324
+      AWS_ENDPOINT_URL_SQS: http://sqs:9324
       SQS_QUEUE_BASE_URL: http://sqs:9324
 
-      AWS_ENDPOINT_URL_S3: http://localhost:9000
+      AWS_ENDPOINT_URL_S3: http://minio:9000
 
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
       OTEL_SERVICE_NAME: govuk-alerts
+      OTEL_METRICS_EXPORTER: none
     volumes:
       - ./repos/emergency-alerts-govuk:/eas/emergency-alerts-govuk
       - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils
 
       - ./environment.sh:/eas/emergency-alerts-govuk/environment.sh:ro
       - ./repos/emergency-alerts-govuk/scripts/start-govuk.sh:/start-govuk.sh:ro
-    networks:
-      - emergency-alerts-network
 
   # Uncomment to run first database setup (creates tables and migrations)
   db-init:
@@ -153,8 +146,6 @@ services:
 
       - ./environment.sh:/eas/emergency-alerts-api/environment.sh:ro
       - ./db-init.sh:/eas/emergency-alerts-api/db-init.sh:ro
-    networks:
-      - emergency-alerts-network
     depends_on:
       - pg
 
@@ -171,8 +162,6 @@ services:
     volumes:
       - ./postgres:/docker-entrypoint-initdb.d:ro
       - pg-data:/var/lib/postgresql/data
-    networks:
-      - emergency-alerts-network
     ports:
       - 5432:5432
 
@@ -207,25 +196,17 @@ services:
     ports:
       - "9324:9324" # SQS API
       - "9325:9325" # SQS UI
-    networks:
-      - emergency-alerts-network
     volumes:
       - ./elasticmq.conf:/opt/elasticmq.conf:ro
 
   jaeger:
-    image: cr.jaegertracing.io/jaegertracing/jaeger:2.11.0
+    image: cr.jaegertracing.io/jaegertracing/jaeger:2.12.0
     environment:
       - LOG_LEVEL=debug
     ports:
       - "16686:16686" # Jaeger UI
       - "4317:4317" # OTLP gRPC
       - "4318:4318" # OTLP HTTP
-    networks:
-      - emergency-alerts-network
-
-networks:
-  emergency-alerts-network:
-    driver: bridge
 
 volumes:
   pg-data: {}
