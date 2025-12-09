@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+# Create SQS queues
+awslocal sqs create-queue --queue-name local-periodic-tasks --attributes VisibilityTimeout=300
+awslocal sqs create-queue --queue-name local-govuk-alerts --attributes VisibilityTimeout=300
+awslocal sqs create-queue --queue-name local-broadcast-tasks --attributes VisibilityTimeout=300
+
+# Create S3 bucket
+awslocal s3 mb s3://local-govuk-alerts
+
+# Enable static website hosting
+awslocal s3 website s3://local-govuk-alerts/ \
+  --index-document index.html \
+  --error-document error.html
+
+# Upload a sample index.html
+echo "<html><body><h1>This is Gov.UK</h1><p>Well, not really, but you're probably meaning to head to <a href='/alerts'>/alerts</a>.</body></html>" \
+  > /tmp/index.html
+
+awslocal s3 cp /tmp/index.html s3://local-govuk-alerts/index.html
