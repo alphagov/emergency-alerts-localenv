@@ -4,11 +4,7 @@ This is a opinionated and unperfect Docker Compose-based instance of the Emergen
 It will use the exact same Dockerfiles as used to build the main system as well as approximations of AWS components running locally.
 You may of course run components manually, or only use a subset of these components.
 
-Notably it does *not* include the following (most TBC, contributions welcome):
-- The Cell Broadcast Controller Proxy functionality (a Lambda). 'Sending' a broadcast will have those tasks ultimately fail.
-- A web server for the 'S3' bucket (CloudFront in practice) for GovUK-generated content
-- A shim for Fastly (called to by GovUK)
-- Metrics
+Notably it does *not* include the Cell Broadcast Controller Proxy functionality (a Lambda). 'Sending' a broadcast will have those tasks ultimately fail.
 
 ## Getting started
 

@@ -25,6 +25,7 @@ services:
       AWS_ACCESS_KEY_ID: aws_key
       AWS_SECRET_ACCESS_KEY: aws_secret
       AWS_DEFAULT_REGION: us-east-1
+      AWS_ENDPOINT_URL_CLOUDWATCH: http://localstack:4566
       AWS_ENDPOINT_URL_SQS: http://localstack:4566
       SQS_QUEUE_BASE_URL: http://sqs.us-east-1.localstack:4566/000000000000
 
@@ -58,6 +59,7 @@ services:
       AWS_ACCESS_KEY_ID: aws_key
       AWS_SECRET_ACCESS_KEY: aws_secret
       AWS_DEFAULT_REGION: us-east-1
+      AWS_ENDPOINT_URL_CLOUDWATCH: http://localstack:4566
       AWS_ENDPOINT_URL_SQS: http://localstack:4566
       SQS_QUEUE_BASE_URL: http://sqs.us-east-1.localstack:4566/000000000000
 
@@ -118,6 +120,7 @@ services:
       # AWS_DEFAULT_REGION: us-east-1 # Needs to be representative to let the AWS SDK autodiscover work
       AWS_REGION: us-east-1
       AWS_ENDPOINT_URL_SQS: http://localstack:4566
+      AWS_ENDPOINT_URL_CLOUDWATCH: http://localstack:4566
       AWS_ENDPOINT_URL_S3: http://localstack:4566
       SQS_QUEUE_BASE_URL: http://sqs.us-east-1.localstack:4566/000000000000
 
@@ -170,7 +173,7 @@ services:
       - "4566:4566"
       # - "4571:4571"
     environment:
-      - SERVICES=s3,sqs
+      - SERVICES=s3,sqs,cloudwatch
       - DEBUG=1
       - LOCALSTACK_HOST=localstack
     volumes:
