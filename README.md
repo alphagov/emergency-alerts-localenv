@@ -1,64 +1,53 @@
-# Ensure docker is installed/running
+# Emergency Alerts Localenv
 
-    brew install qemu
-    https://www.docker.com/products/docker-desktop/
+This is a opinionated and unperfect Docker Compose-based instance of the Emergency Alerts system in a turnkey fashion.
+It will use the exact same Dockerfiles as used to build the main system as well as approximations of AWS components running locally.
+You may of course run components manually, or only use a subset of these components.
 
-# Clone this repository
+Notably it does *not* include the following (most TBC, contributions welcome):
+- The Cell Broadcast Controller Proxy functionality (a Lambda). 'Sending' a broadcast will have those tasks ultimately fail.
+- A web server for the 'S3' bucket (CloudFront in practice) for GovUK-generated content
+- A shim for Fastly (called to by GovUK)
+- Metrics
 
-    git clone git@github.com:alphagov/emergency-alerts-localenv.git
-    cd emergency-alerts-localenv
+## Getting started
 
-# Clone all Emergency Alerts repos (not all are listed here)
+This repository expects a specific folder layout. More specifically, repositories should be checked out to `repos/<repo>` within this repository.
 
-    cd repos
-    git clone git@github.com:alphagov/emergency-alerts-api.git
-    git clone git@github.com:alphagov/emergency-alerts-govuk.git
-    git clone git@github.com:alphagov/emergency-alerts-utils.git
-    git clone git@github.com:alphagov/emergency-alerts-tooling.git
-    git clone git@github.com:alphagov/emergency-alerts-admin.git
+```bash
+git clone https://github.com/alphagov/emergency-alerts-localenv
+cd emergency-alerts-localenv/repos
+git clone https://github.com/alphagov/emergency-alerts-api.git
+git clone https://github.com/alphagov/emergency-alerts-govuk.git
+git clone https://github.com/alphagov/emergency-alerts-utils.git
+git clone https://github.com/alphagov/emergency-alerts-tooling.git
+git clone https://github.com/alphagov/emergency-alerts-admin.git
+```
 
-# Download broadcast-areas.sqlite3 from S3
+Admin requires a large SQLite Database of location libraries. You can fetch this from the `infra-mgt` AWS account in an S3 bucket.
+It will need copying to `emergency-alerts-localenv/repos/emergency-alerts-admin/app/broadcast_areas/broadcast-areas.sqlite3`.
 
-You can use the emergency-alerts-development account. You can find it in the bucket prefixed with `eas-app-postcode-bucket-`.
-After you have downloaded the file, place it in the `emergency-alerts-localenv/repos/emergency-alerts-admin/app/broadcast_areas/` directory.
+Modify the `emergency-alerts-localenv/environment.sh` file by adding the credentials for the environment variables:
+ - MASTER_USERNAME
+ - MASTER_PASSWORD
+ - SECRET_KEY
+ - DANGEROUS_SALT
+ - ENCRYPTION_DANGEROUS_SALT
+ - ENCRYPTION_SECRET_KEY
+ - ADMIN_CLIENT_SECRET
+ - POSTGRES_PASSWORD
+ - POSTGRES_USER
+ - POSTGRES_DB
 
-# Set Postgres Credentials
+Values for these are outlined in this guidance note:
+    https://gds-ea.atlassian.net/wiki/spaces/EA/pages/192217089/Setting+up+Local+Development+Environment#Getting-API-setup
 
-    Modify the `emergency-alerts-localenv/environment.sh` file by adding the credentials for the environment variables
-      MASTER_USERNAME
-      MASTER_PASSWORD
-      SECRET_KEY
-      DANGEROUS_SALT
-      ENCRYPTION_DANGEROUS_SALT
-      ENCRYPTION_SECRET_KEY
-      ADMIN_CLIENT_SECRET
-      POSTGRES_PASSWORD
-      POSTGRES_USER
-      POSTGRES_DB
-    using the values outlined in this guidance note:
-        https://gds-ea.atlassian.net/wiki/spaces/EA/pages/192217089/Setting+up+Local+Development+Environment#Getting-API-setup
+Now you should be able to ask Docker Compose to come up. We use a shared based image which there isn't great native support for.
+You may have to run this a couple of times (as the builds for repos will fail while base/utils is building) - or build base first:
+```
+docker compose up --build utils
+docker compose up
+```
 
-# Bring up the containers
-
-    cd emergency-alerts-api
-    docker compose up api -d
-    docker compose up db-init
-
-# Once this completes and returns to a prompt
-
-    docker compose down db-init
-    docker compose up admin -d
-
-# Check that the admin site works
-
-    docker compose up admin
-
-Once this completes and shows waiting for connections, open a local browser and visit http://localhost:6012
-
-# Bring up the govuk container
-
-    docker compose up govuk
-
-# Check that the govuk site works
-
-Once this completes and shows waiting for connections, open a local browser and visit http://localhost:6017/alerts
+This should automatically provision Postgres with a test database and auto-populate LocalStack with 'AWS' resources.
+The admin UI should be reachable at http://localhost:6012 and the GovUK at http://local-govuk-alerts.s3-website.localhost.localstack.cloud:4566.
