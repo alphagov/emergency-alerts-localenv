@@ -39,11 +39,13 @@ Values for these are outlined in this guidance note:
     https://gds-ea.atlassian.net/wiki/spaces/EA/pages/192217089/Setting+up+Local+Development+Environment#Getting-API-setup
 
 Now you should be able to ask Docker Compose to come up. We use a shared based image which there isn't great native support for.
-You may have to run this a couple of times (as the builds for repos will fail while base/utils is building) - or build base first:
+You may have to run this a couple of times (as the builds for repos will fail while base/utils is building) - or build base first.
+
+You may also need to ensure Postgres and Localstack are up and running before the others - Celery nopes out immediately if SQS isn't populated.
 ```
-docker compose up --build utils
+docker compose up -d utils localstack postgres
 docker compose up
 ```
 
 This should automatically provision Postgres with a test database and auto-populate LocalStack with 'AWS' resources.
-The admin UI should be reachable at http://localhost:6012 and the GovUK at http://local-govuk-alerts.s3-website.localhost.localstack.cloud:4566.
+The admin UI should be reachable at http://localhost:6012 and the GovUK at http://local-govuk-alerts.s3-website.localhost.localstack.cloud:4566/alerts.
