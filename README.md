@@ -43,7 +43,7 @@ You may have to run this a couple of times (as the builds for repos will fail wh
 
 You may also need to ensure Postgres and Localstack are up and running before the others - Celery nopes out immediately if SQS isn't populated.
 ```
-docker compose up -d utils localstack postgres
+docker compose up -d utils localstack pg
 docker compose up
 ```
 
