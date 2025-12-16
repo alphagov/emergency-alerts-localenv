@@ -7,11 +7,25 @@ set -e
 
 . /eas/emergency-alerts-api/environment.sh
 
-psql postgresql://postgres:root@host.docker.internal:5432/postgres <<-EOSQL
+psql postgresql://postgres:root@pg:5432/postgres <<-EOSQL
     CREATE DATABASE $DATABASE;
 EOSQL
 
-psql postgresql://postgres:root@host.docker.internal:5432/postgres -v ON_ERROR_STOP=1 <<-EOSQL
+cd /eas/emergency-alerts-api
+
+. /venv/emergency-alerts-api/bin/activate
+
+# PostGIS requires superuser to create the extension during its migration
+export MASTER_USERNAME='postgres'
+export MASTER_PASSWORD='root'
+
+flask db upgrade
+echo "Flask done"
+
+cd /eas/emergency-alerts-tooling/ansible/environments/development
+ansible-playbook -e "database_host=pg database_username=postgres database_password=root email_address=eas.admin@digital.cabinet-office.gov.uk phone_number=07700900111" 02-database-setup-after-migrations.yml
+
+psql postgresql://postgres:root@pg:5432/postgres -v ON_ERROR_STOP=1 <<-EOSQL
 DO \$\$
 BEGIN
     IF NOT EXISTS ( SELECT FROM pg_roles WHERE rolname = 'eas-user') THEN
@@ -24,20 +38,6 @@ BEGIN
 END;
 \$\$;
 EOSQL
-
-cd /eas/emergency-alerts-api
-
-. /venv/emergency-alerts-api/bin/activate
-
-# PostGIS requires superuser to create the extension
-export MASTER_USERNAME='postgres'
-export MASTER_PASSWORD='root'
-
-flask db upgrade
-echo "Flask done"
-
-cd /eas/emergency-alerts-tooling/ansible/environments/development
-ansible-playbook -e "database_host=postgres database_username=postgres database_password=root email_address=eas.admin@digital.cabinet-office.gov.uk phone_number=07700900111" 02-database-setup-after-migrations.yml
 
 if [ $? -eq 0 ]
 then

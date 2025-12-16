@@ -6,7 +6,7 @@ services:
     image: localhost/eas-localenv-base
     command:
       ["echo", "This is utils - just a base image that doesn't do anything."]
-    restart: no
+    restart: "no"
 
   api:
     build:
@@ -148,7 +148,7 @@ services:
   db-init:
     image: localhost/eas-localenv-api
     user: root # Override so we can install packages
-    restart: no
+    restart: "no"
     entrypoint: /eas/emergency-alerts-api/db-init.sh
     volumes:
       - ./repos/emergency-alerts-api:/eas/emergency-alerts-api
