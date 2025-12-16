@@ -25,6 +25,8 @@ echo "Flask done"
 cd /eas/emergency-alerts-tooling/ansible/environments/development
 ansible-playbook -e "database_host=pg database_username=postgres database_password=root email_address=eas.admin@digital.cabinet-office.gov.uk phone_number=07700900111" 02-database-setup-after-migrations.yml
 
+# Because the tables were created by the postgres user, they're owned by postgres, not eas-user
+# So we patch that up by adding grants after the migrations.
 psql postgresql://postgres:root@pg:5432/postgres -v ON_ERROR_STOP=1 <<-EOSQL
 DO \$\$
 BEGIN
@@ -33,6 +35,7 @@ BEGIN
     END IF;
 
     GRANT ALL PRIVILEGES ON DATABASE $DATABASE TO "eas-user";
+    GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "eas-user";
 
     ALTER USER "eas-user" WITH PASSWORD 'password';
 END;
