@@ -1,7 +1,6 @@
-// Note: This has *not* been tested on macOS
+// Note: This has *not* been extensively tested.
 {
 	"name": "Python 3",
-	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/python:2-3.12-bookworm",
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": { },
