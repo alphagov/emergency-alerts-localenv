@@ -43,18 +43,6 @@ Running on Linux? Make sure the repos have rw for everyone - as the containers r
 
 For development you'll want to create a Python virtual environment in each repo and install Python dependencies (and build Node components too)
 ```bash
-cd emergency-alerts-govuk
-python -m venv venv
-make bootstrap
-cd ../emergency-alerts-api
-python -m venv venv
-make bootstrap
-cd ../emergency-alerts-admin
-python -m venv venv
-make bootstrap
-cd ../emergency-alerts-utils
-python -m venv venv
-make bootstrap
 # in repos/
 cd emergency-alerts-govuk
 python -m venv venv
