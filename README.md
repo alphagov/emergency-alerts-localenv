@@ -81,16 +81,14 @@ Modify the `emergency-alerts-localenv/environment.sh` file by adding the credent
  - ADMIN_CLIENT_SECRET
  - POSTGRES_PASSWORD
  - POSTGRES_USER
- - POSTGRES_DB
 
-Values for these are outlined in this guidance note:
-    https://gds-ea.atlassian.net/wiki/spaces/EA/pages/192217089/Setting+up+Local+Development+Environment#Getting-API-setup
+In general you can largely make these values up, but you'll only want to set these once for a given DB's lifetime.
 
 Now you should be able to ask Docker Compose to come up. We use a shared based image which there isn't great native support for.
 You may also need to ensure Postgres and Localstack are up and running before the others - Celery nopes out immediately if SQS isn't populated.
 ```
 . ./environment.sh
-docker compose up -d utils localstack pg jaeger
+docker compose up -d utils localstack pg jaeger lambda
 docker compose build api
 docker compose up -d
 ```

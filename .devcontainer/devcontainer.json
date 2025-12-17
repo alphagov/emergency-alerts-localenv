@@ -4,8 +4,8 @@
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"image": "mcr.microsoft.com/devcontainers/python:2-3.12-bookworm",
 	"features": {
-		"ghcr.io/devcontainers/features/node:1": {},
-		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+		"ghcr.io/devcontainers/features/node:1": { },
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": { }
 	},
 	"customizations": {
 		"vscode": {
@@ -17,5 +17,8 @@
 				"ms-python.black-formatter"
 			]
 		}
+	},
+	"remoteEnv": {
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
 	}
 }

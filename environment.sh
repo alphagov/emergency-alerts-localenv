@@ -11,12 +11,9 @@ export WERKZEUG_DEBUG_PIN=off
 export DATABASE='emergency_alerts'
 export RDS_HOST='pg'
 export RDS_PORT=5432
-export RDS_USER='eas-user'
-export RDS_REGION='eu-west-2'
 
 export USE_RDS_IAM_AUTH="false"
-export MASTER_USERNAME=
-export MASTER_PASSWORD=
+# Confusingly master here refers to the application's DB user (i.e. not the DB superuser)
 
 export API_HOST_NAME=http://api:6011
 export ADMIN_EXTERNAL_URL=http://localhost:6012
@@ -35,6 +32,6 @@ export ENCRYPTION_DANGEROUS_SALT=
 export ENCRYPTION_SECRET_KEY=
 export ADMIN_CLIENT_SECRET=
 
-export POSTGRES_PASSWORD=
+# The superuser within Postgres
 export POSTGRES_USER=
-export POSTGRES_DB=
+export POSTGRES_PASSWORD=

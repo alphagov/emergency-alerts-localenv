@@ -38,11 +38,11 @@ services:
     ports:
       - "6011:6011"
     volumes:
-      - ./repos/emergency-alerts-api:/eas/emergency-alerts-api:z
-      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api:/eas/emergency-alerts-api:z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
 
-      - ./environment.sh:/eas/emergency-alerts-api/environment.sh:ro,z
-      - ./repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/emergency-alerts-api/environment.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro,z
     depends_on:
       - pg
       - localstack
@@ -71,11 +71,11 @@ services:
       OTEL_SERVICE_NAME: api
       OTEL_METRICS_EXPORTER: none
     volumes:
-      - ./repos/emergency-alerts-api:/eas/emergency-alerts-api:z
-      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api:/eas/emergency-alerts-api:z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
 
-      - ./environment.sh:/eas/emergency-alerts-api/environment.sh:ro,z
-      - ./repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/emergency-alerts-api/environment.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro,z
     depends_on:
       - pg
       - localstack
@@ -94,11 +94,11 @@ services:
     ports:
       - "6012:6012"
     volumes:
-      - ./repos/emergency-alerts-admin:/eas/emergency-alerts-admin:z
-      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-admin:/eas/emergency-alerts-admin:z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
 
-      - ./environment.sh:/eas/emergency-alerts-admin/environment.sh:ro,z
-      - ./repos/emergency-alerts-admin/scripts/start.sh:/start.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/emergency-alerts-admin/environment.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-admin/scripts/start.sh:/start.sh:ro,z
     environment:
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
@@ -136,11 +136,11 @@ services:
       OTEL_SERVICE_NAME: govuk-alerts
       OTEL_METRICS_EXPORTER: none
     volumes:
-      - ./repos/emergency-alerts-govuk:/eas/emergency-alerts-govuk:z
-      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-govuk:/eas/emergency-alerts-govuk:z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
 
-      - ./environment.sh:/eas/emergency-alerts-govuk/environment.sh:ro,z
-      - ./repos/emergency-alerts-govuk/scripts/start-govuk.sh:/start-govuk.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/emergency-alerts-govuk/environment.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-govuk/scripts/start-govuk.sh:/start-govuk.sh:ro,z
     depends_on:
       - localstack
       - api
@@ -150,14 +150,17 @@ services:
     image: localhost/eas-localenv-api
     user: root # Override so we can install packages
     restart: "no"
-    entrypoint: /eas/emergency-alerts-api/db-init.sh
+    entrypoint: /eas/db-init.sh
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
     volumes:
-      - ./repos/emergency-alerts-api:/eas/emergency-alerts-api:z
-      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
-      - ./repos/emergency-alerts-tooling:/eas/emergency-alerts-tooling:z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api:/eas/emergency-alerts-api:z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-tooling:/eas/emergency-alerts-tooling:z
 
-      - ./environment.sh:/eas/emergency-alerts-api/environment.sh:ro,z
-      - ./db-init.sh:/eas/emergency-alerts-api/db-init.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/emergency-alerts-api/environment.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/db-init.sh:/eas/db-init.sh:ro,z
     depends_on:
       - pg
 
@@ -166,9 +169,8 @@ services:
     platform: linux/amd64
     restart: always
     environment:
-      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
       POSTGRES_USER: $POSTGRES_USER
-      POSTGRES_DB: $POSTGRES_DB
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
     volumes:
       - pg-data:/var/lib/postgresql/data
     ports:
@@ -182,7 +184,7 @@ services:
       - "python"
       - "/lambda-api.py"
     volumes:
-      - ./lambda-api.py:/lambda-api.py:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/lambda-api.py:/lambda-api.py:ro,z
 
   localstack:
     image: localstack/localstack:4.11.1
@@ -194,7 +196,7 @@ services:
       - DEBUG=1
       - LOCALSTACK_HOST=localstack
     volumes:
-      - ./localstack.sh:/etc/localstack/init/ready.d/localstack.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/localstack.sh:/etc/localstack/init/ready.d/localstack.sh:ro,z
 
   jaeger:
     image: cr.jaegertracing.io/jaegertracing/jaeger:2.12.0
