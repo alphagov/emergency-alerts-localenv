@@ -33,6 +33,7 @@ services:
 
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
+      OTEL_TRACES_SAMPLER: always_on
       OTEL_SERVICE_NAME: api
       OTEL_METRICS_EXPORTER: none
     ports:
@@ -68,6 +69,7 @@ services:
 
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
+      OTEL_TRACES_SAMPLER: always_on
       OTEL_SERVICE_NAME: api
       OTEL_METRICS_EXPORTER: none
     volumes:
@@ -102,6 +104,7 @@ services:
     environment:
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
+      OTEL_TRACES_SAMPLER: always_on
       OTEL_SERVICE_NAME: admin
       OTEL_METRICS_EXPORTER: none
     depends_on:
@@ -132,6 +135,7 @@ services:
 
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
+      OTEL_TRACES_SAMPLER: always_on
       OTEL_SERVICE_NAME: govuk-alerts
       OTEL_METRICS_EXPORTER: none
     volumes:
