@@ -5,7 +5,8 @@ services:
       dockerfile: Dockerfile.eas-base
     image: localhost/eas-localenv-base
     command:
-      ["echo", "This is utils - just a base image that doesn't do anything."]
+      - "echo"
+      - "This is utils - just a base image that doesn't do anything."
     restart: "no"
 
   api:
@@ -37,11 +38,11 @@ services:
     ports:
       - "6011:6011"
     volumes:
-      - ./repos/emergency-alerts-api:/eas/emergency-alerts-api
-      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils
+      - ./repos/emergency-alerts-api:/eas/emergency-alerts-api:z
+      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
 
-      - ./environment.sh:/eas/emergency-alerts-api/environment.sh:ro
-      - ./repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro
+      - ./environment.sh:/eas/emergency-alerts-api/environment.sh:ro,z
+      - ./repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro,z
     depends_on:
       - pg
       - localstack
@@ -70,11 +71,11 @@ services:
       OTEL_SERVICE_NAME: api
       OTEL_METRICS_EXPORTER: none
     volumes:
-      - ./repos/emergency-alerts-api:/eas/emergency-alerts-api
-      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils
+      - ./repos/emergency-alerts-api:/eas/emergency-alerts-api:z
+      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
 
-      - ./environment.sh:/eas/emergency-alerts-api/environment.sh:ro
-      - ./repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro
+      - ./environment.sh:/eas/emergency-alerts-api/environment.sh:ro,z
+      - ./repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro,z
     depends_on:
       - pg
       - localstack
@@ -93,11 +94,11 @@ services:
     ports:
       - "6012:6012"
     volumes:
-      - ./repos/emergency-alerts-admin:/eas/emergency-alerts-admin
-      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils
+      - ./repos/emergency-alerts-admin:/eas/emergency-alerts-admin:z
+      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
 
-      - ./environment.sh:/eas/emergency-alerts-admin/environment.sh:ro
-      - ./repos/emergency-alerts-admin/scripts/start.sh:/start.sh:ro
+      - ./environment.sh:/eas/emergency-alerts-admin/environment.sh:ro,z
+      - ./repos/emergency-alerts-admin/scripts/start.sh:/start.sh:ro,z
     environment:
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
@@ -135,11 +136,11 @@ services:
       OTEL_SERVICE_NAME: govuk-alerts
       OTEL_METRICS_EXPORTER: none
     volumes:
-      - ./repos/emergency-alerts-govuk:/eas/emergency-alerts-govuk
-      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils
+      - ./repos/emergency-alerts-govuk:/eas/emergency-alerts-govuk:z
+      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
 
-      - ./environment.sh:/eas/emergency-alerts-govuk/environment.sh:ro
-      - ./repos/emergency-alerts-govuk/scripts/start-govuk.sh:/start-govuk.sh:ro
+      - ./environment.sh:/eas/emergency-alerts-govuk/environment.sh:ro,z
+      - ./repos/emergency-alerts-govuk/scripts/start-govuk.sh:/start-govuk.sh:ro,z
     depends_on:
       - localstack
       - api
@@ -151,12 +152,12 @@ services:
     restart: "no"
     entrypoint: /eas/emergency-alerts-api/db-init.sh
     volumes:
-      - ./repos/emergency-alerts-api:/eas/emergency-alerts-api
-      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils
-      - ./repos/emergency-alerts-tooling:/eas/emergency-alerts-tooling
+      - ./repos/emergency-alerts-api:/eas/emergency-alerts-api:z
+      - ./repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
+      - ./repos/emergency-alerts-tooling:/eas/emergency-alerts-tooling:z
 
-      - ./environment.sh:/eas/emergency-alerts-api/environment.sh:ro
-      - ./db-init.sh:/eas/emergency-alerts-api/db-init.sh:ro
+      - ./environment.sh:/eas/emergency-alerts-api/environment.sh:ro,z
+      - ./db-init.sh:/eas/emergency-alerts-api/db-init.sh:ro,z
     depends_on:
       - pg
 
@@ -177,9 +178,11 @@ services:
   # with a hardcoded response
   lambda:
     image: python:3.12-alpine
-    command: ["python", "/lambda-api.py"]
+    command:
+      - "python"
+      - "/lambda-api.py"
     volumes:
-      - ./lambda-api.py:/lambda-api.py:ro
+      - ./lambda-api.py:/lambda-api.py:ro,z
 
   localstack:
     image: localstack/localstack:4.11.1
@@ -191,7 +194,7 @@ services:
       - DEBUG=1
       - LOCALSTACK_HOST=localstack
     volumes:
-      - ./localstack.sh:/etc/localstack/init/ready.d/localstack.sh:ro
+      - ./localstack.sh:/etc/localstack/init/ready.d/localstack.sh:ro,z
 
   jaeger:
     image: cr.jaegertracing.io/jaegertracing/jaeger:2.12.0
