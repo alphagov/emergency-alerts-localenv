@@ -25,6 +25,8 @@ git clone https://github.com/alphagov/emergency-alerts-tooling.git
 git clone https://github.com/alphagov/emergency-alerts-admin.git
 ```
 
+Running on Linux? Make sure the repos have rw for everyone - as the containers run as non-root and will need access to bind mounts of their respective repo folders.
+
 > You'll want to have suitable virtual environments for each Python project and run a `make bootstrap` within them. But if you're just after running containers locally immediately you can sidestep this a bit:
 > ```bash
 > # in repos/
