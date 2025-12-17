@@ -14,6 +14,8 @@ export RDS_PORT=5432
 
 export USE_RDS_IAM_AUTH="false"
 # Confusingly master here refers to the application's DB user (i.e. not the DB superuser)
+export MASTER_USERNAME=
+export MASTER_PASSWORD=
 
 export API_HOST_NAME=http://api:6011
 export ADMIN_EXTERNAL_URL=http://localhost:6012
