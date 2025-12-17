@@ -118,13 +118,12 @@ services:
     command:
       - bash
       - -c
-      - . /eas/emergency-alerts-govuk/environment.sh && bash /start-govuk.sh
+      - . /eas/emergency-alerts-govuk/environment.sh && unset FLASK_APP && bash /start-govuk.sh
     ports:
       - "6017:6017"
     environment:
       AWS_ACCESS_KEY_ID: aws_key
       AWS_SECRET_ACCESS_KEY: aws_secret
-      # AWS_DEFAULT_REGION: us-east-1 # Needs to be representative to let the AWS SDK autodiscover work
       AWS_REGION: us-east-1
       AWS_ENDPOINT_URL_SQS: http://localstack:4566
       AWS_ENDPOINT_URL_CLOUDWATCH: http://localstack:4566
