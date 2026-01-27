@@ -1,34 +1,52 @@
-#!/bin/sh
+#!/bin/bash
 
-echo "Installing packages to do db initialisation..."
 apt update
-apt install ansible -y
-apt install postgresql-client -y
+apt install ansible postgresql-client python3-psycopg2 -y
 
-psql postgresql://postgres:root@host.docker.internal:5432/postgres <<-EOSQL
-    CREATE DATABASE emergency_alerts;
+set -e
+
+. /eas/emergency-alerts-api/environment.sh
+
+psql postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@pg:5432/postgres <<-EOSQL
+    CREATE DATABASE $DATABASE;
 EOSQL
 
-psql postgresql://postgres:root@host.docker.internal:5432/postgres -v ON_ERROR_STOP=1 <<-EOSQL
+cd /eas/emergency-alerts-api
+
+. /venv/emergency-alerts-api/bin/activate
+
+# PostGIS requires superuser to create the extension during its migration
+# So we override 'master' so that Python logs in as the super user here
+export MASTER_USERNAME=$POSTGRES_USER
+export MASTER_PASSWORD=$POSTGRES_PASSWORD
+
+flask db upgrade
+echo "Flask done"
+
+# Now we've ran Flask migrations we reset MASTER_USERNAME to the local Postgres user (non-superuser)
+. /eas/emergency-alerts-api/environment.sh
+
+# Because the tables were created by the postgres user, they're owned by postgres, not eas-user
+# So we patch that up by adding grants after the migrations.
+psql postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@pg:5432/$DATABASE -v ON_ERROR_STOP=1 <<-EOSQL
 DO \$\$
 BEGIN
-    IF NOT EXISTS ( SELECT FROM pg_roles WHERE  rolname = 'eas-user') THEN
-        CREATE USER "eas-user";
+    IF NOT EXISTS ( SELECT FROM pg_roles WHERE rolname = '$MASTER_USERNAME') THEN
+        CREATE USER "$MASTER_USERNAME";
     END IF;
-    GRANT ALL PRIVILEGES ON DATABASE emergency_alerts TO "eas-user";
-    ALTER USER "eas-user" WITH PASSWORD 'password';
+
+    GRANT ALL PRIVILEGES ON DATABASE $DATABASE TO "$MASTER_USERNAME";
+    GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO "$MASTER_USERNAME";
+    GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO "$MASTER_USERNAME";
+
+    ALTER USER "$MASTER_USERNAME" WITH PASSWORD '$MASTER_PASSWORD';
 END;
 \$\$;
 EOSQL
 
-cd /build/repos/emergency-alerts-api
-cat /build/environment.sh
-. /build/environment.sh && flask db upgrade
-
-cd /build/repos/emergency-alerts-tooling/ansible/environments/local/
-cat local-postgres-setup.yml | sed "s/127.0.0.1/host.docker.internal/" | sed "s/localhost/host.docker.internal/" >/build/local-postgres-setup.yml
-cd /build
-ansible-playbook local-postgres-setup.yml
+# And now we can put data in those tables as the non-superuser
+cd /eas/emergency-alerts-tooling/ansible/environments/development
+ansible-playbook -e "database_host=pg database_username=$MASTER_USERNAME database_password=$MASTER_PASSWORD email_address=eas.admin@digital.cabinet-office.gov.uk phone_number=07700900111" 02-database-setup-after-migrations.yml
 
 if [ $? -eq 0 ]
 then

@@ -1,0 +1,56 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "repos/emergency-alerts-admin"
+    },
+    {
+      "path": "repos/emergency-alerts-api"
+    },
+    {
+      "path": "repos/emergency-alerts-cbc-proxy"
+    },
+    {
+      "path": "repos/emergency-alerts-credentials"
+    },
+    {
+      "path": "repos/emergency-alerts-govuk"
+    },
+    {
+      "path": "repos/emergency-alerts-infra"
+    },
+    {
+      "path": "repos/emergency-alerts-tooling"
+    },
+    {
+      "path": "repos/emergency-alerts-utils"
+    },
+    {
+      "path": "repos/emergency-alerts-functional-tests"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true,
+      "repos": true,
+    },
+    "flake8.severity": {
+      "F": "Warning",
+      "E": "Warning",
+      "C": "Warning"
+    },
+    "editor.formatOnSave": true,
+    "files.associations": {
+      "*.html": "jinja"
+    },
+    "json.format.keepLines": true,
+    "git.autofetch": true
+  }
+}
