@@ -48,18 +48,20 @@ services:
       - pg
       - localstack
 
-  celery:
+  api-worker:
     build:
       context: repos/emergency-alerts-api
-      dockerfile: Dockerfile.eas-celery
+      dockerfile: Dockerfile.eas-api
       args:
         BASE_IMAGE: localhost/eas-localenv-base
-    image: localhost/eas-localenv-celery
+    image: localhost/eas-localenv-api
     command:
       - bash
       - -c
-      - . /eas/emergency-alerts-api/environment.sh && bash /start-celery.sh
+      - . /eas/emergency-alerts-api/environment.sh && bash /start-api.sh
     environment:
+      SERVICE_ACTION: run_worker
+
       AWS_ACCESS_KEY_ID: aws_key
       AWS_SECRET_ACCESS_KEY: aws_secret
       AWS_DEFAULT_REGION: us-east-1
@@ -70,14 +72,50 @@ services:
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
       OTEL_TRACES_SAMPLER: always_on
-      OTEL_SERVICE_NAME: api
+      OTEL_SERVICE_NAME: api-worker
       OTEL_METRICS_EXPORTER: none
     volumes:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api:/eas/emergency-alerts-api:z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
 
       - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/emergency-alerts-api/environment.sh:ro,z
-      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api/scripts/start-celery.sh:/start-celery.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro,z
+    depends_on:
+      - pg
+      - localstack
+
+  api-periodiq:
+    build:
+      context: repos/emergency-alerts-api
+      dockerfile: Dockerfile.eas-api
+      args:
+        BASE_IMAGE: localhost/eas-localenv-base
+    image: localhost/eas-localenv-api
+    command:
+      - bash
+      - -c
+      - . /eas/emergency-alerts-api/environment.sh && bash /start-api.sh
+    environment:
+      SERVICE_ACTION: run_periodiq
+
+      AWS_ACCESS_KEY_ID: aws_key
+      AWS_SECRET_ACCESS_KEY: aws_secret
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ENDPOINT_URL_CLOUDWATCH: http://localstack:4566
+      AWS_ENDPOINT_URL_SQS: http://localstack:4566
+      SQS_QUEUE_BASE_URL: http://sqs.us-east-1.localstack:4566/000000000000
+
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
+      OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
+      OTEL_TRACES_SAMPLER: always_on
+      OTEL_SERVICE_NAME: api-periodiq
+      OTEL_METRICS_EXPORTER: none
+    volumes:
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api:/eas/emergency-alerts-api:z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
+
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/emergency-alerts-api/environment.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro,z
     depends_on:
       - pg
       - localstack
