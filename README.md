@@ -27,7 +27,7 @@ git clone https://github.com/alphagov/emergency-alerts-admin.git
 
 Running on Linux? Make sure the repos have rw for everyone - as the containers run as non-root and will need access to bind mounts of their respective repo folders.
 
-**If you're using a VPN which does MitM traffic inspection**: You will need to install the root CA certificate on your base image. The quickest way to do this is to go to Keychain Access, search for the VPN CA (e.g., "Zscaler"), right-click, and export the CA certificate as a `.pem` file. Then place that under the root of your `emergency-alerts-utils` repository, named `vpn-ca.pem`. It'll be picked up by the Docker build, and in turn inherited by the application images.
+**If you're using a VPN which does MitM traffic inspection**: You will need to install the root CA certificate on your base image. The quickest way to do this is to go to Keychain Access (on macOS), search for the VPN CA (e.g., "Zscaler"), right-click, and export the CA certificate as a `.pem` file. Then place that under the root of your `emergency-alerts-utils` repository, named `vpn-ca.pem`. It'll be picked up by the Docker build, and in turn inherited by the application images.
 
 > You'll want to have suitable virtual environments for each Python project and run a `make bootstrap` within them. But if you're just after running containers locally immediately you can sidestep this a bit:
 > ```bash
