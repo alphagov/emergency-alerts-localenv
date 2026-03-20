@@ -69,6 +69,7 @@ Modify the `emergency-alerts-localenv/environment.sh` file by adding the credent
  - ENCRYPTION_DANGEROUS_SALT
  - ENCRYPTION_SECRET_KEY
  - ADMIN_CLIENT_SECRET
+ - GOVUK_CLIENT_SECRET
  - POSTGRES_PASSWORD
  - POSTGRES_USER
 
@@ -78,7 +79,7 @@ Now you should be able to ask Docker Compose to come up. We use a shared based i
 You may also need to ensure Postgres and Localstack are up and running before the others - Celery nopes out immediately if SQS isn't populated.
 ```
 . ./environment.sh
-docker compose up -d utils localstack pg jaeger lambda
+docker compose up --build -d utils localstack pg jaeger lambda
 docker compose build api
 docker compose up -d
 ```
