@@ -61,7 +61,7 @@ services:
       - . /eas/emergency-alerts-api/environment.sh && bash /start-api.sh
     environment:
       SERVICE_ACTION: run_worker
-      WORKER_QUEUE_NAMES: local-periodic-tasks local-broadcast-tasks local-high-priority-tasks
+      WORKER_QUEUE_NAMES: local-dramatiq-periodic-tasks local-dramatiq-broadcast-tasks local-dramatiq-high-priority-tasks
 
       AWS_ACCESS_KEY_ID: aws_key
       AWS_SECRET_ACCESS_KEY: aws_secret
