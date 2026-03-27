@@ -193,9 +193,6 @@ services:
     user: root # Override so we can install packages
     restart: "no"
     entrypoint: /eas/db-init.sh
-    environment:
-      POSTGRES_USER: $POSTGRES_USER
-      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
     volumes:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api:/eas/emergency-alerts-api:z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
@@ -251,4 +248,3 @@ services:
 
 volumes:
   pg-data: {}
-  minio-data: {}

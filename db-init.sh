@@ -8,6 +8,7 @@ set -e
 . /eas/emergency-alerts-api/environment.sh
 
 psql postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@pg:5432/postgres <<-EOSQL
+    CREATE DATABASE $TEST_DATABASE;
     CREATE DATABASE $DATABASE;
 EOSQL
 

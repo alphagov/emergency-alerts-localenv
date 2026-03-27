@@ -15,6 +15,7 @@ export FLASK_DEBUG=False
 export WERKZEUG_DEBUG_PIN=off
 
 export DATABASE='emergency_alerts'
+export TEST_DATABASE='test_emergency_alerts_master'
 export RDS_HOST='pg'
 export RDS_PORT=5432
 
