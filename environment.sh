@@ -29,7 +29,8 @@ export ADMIN_EXTERNAL_URL=http://localhost:6012
 export ADMIN_ACTION_ALLOW_SELF_APPROVAL=true
 export GOVUK_ALERTS_S3_BUCKET_NAME='local-govuk-alerts'
 export GOVUK_ALERTS_HOST_URL=http://localhost:6017
-export NOTIFY_API_CLIENT_SECRET=
+export GOVUK_CLIENT_SECRET=
+export GOVUK_ALERTS_PUBLISH_CLIENT_SECRET=
 export FASTLY_ENABLED=false
 # If running the functional tests on a host - this is the IP of the host from the container's PoV
 # (at least from the perspective of Docker Desktop on macOS)

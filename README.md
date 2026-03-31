@@ -70,6 +70,7 @@ Modify the `emergency-alerts-localenv/environment.sh` file by adding the credent
  - ENCRYPTION_SECRET_KEY
  - ADMIN_CLIENT_SECRET
  - GOVUK_CLIENT_SECRET
+ - GOVUK_ALERTS_PUBLISH_CLIENT_SECRET
  - POSTGRES_PASSWORD
  - POSTGRES_USER
 
