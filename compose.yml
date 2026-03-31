@@ -22,13 +22,6 @@ services:
       - . /eas/emergency-alerts-api/environment.sh && bash /start-api.sh
     environment:
       SERVICE_ACTION: run_api
-
-      AWS_ACCESS_KEY_ID: aws_key
-      AWS_SECRET_ACCESS_KEY: aws_secret
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_ENDPOINT_URL_CLOUDWATCH: http://localstack:4566
-      AWS_ENDPOINT_URL_SQS: http://localstack:4566
-      SQS_QUEUE_BASE_URL: http://sqs.us-east-1.localstack:4566/000000000000
       AWS_ENDPOINT_URL_LAMBDA: http://lambda:5000
 
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
@@ -63,13 +56,6 @@ services:
       SERVICE_ACTION: run_worker
       WORKER_QUEUE_NAMES: local-dramatiq-periodic-tasks local-dramatiq-broadcast-tasks local-dramatiq-high-priority-tasks
 
-      AWS_ACCESS_KEY_ID: aws_key
-      AWS_SECRET_ACCESS_KEY: aws_secret
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_ENDPOINT_URL_CLOUDWATCH: http://localstack:4566
-      AWS_ENDPOINT_URL_SQS: http://localstack:4566
-      SQS_QUEUE_BASE_URL: http://sqs.us-east-1.localstack:4566/000000000000
-
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
       OTEL_TRACES_SAMPLER: always_on
@@ -98,13 +84,6 @@ services:
       - . /eas/emergency-alerts-api/environment.sh && bash /start-api.sh
     environment:
       SERVICE_ACTION: run_periodiq
-
-      AWS_ACCESS_KEY_ID: aws_key
-      AWS_SECRET_ACCESS_KEY: aws_secret
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_ENDPOINT_URL_CLOUDWATCH: http://localstack:4566
-      AWS_ENDPOINT_URL_SQS: http://localstack:4566
-      SQS_QUEUE_BASE_URL: http://sqs.us-east-1.localstack:4566/000000000000
 
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
@@ -164,14 +143,6 @@ services:
     ports:
       - "6017:6017"
     environment:
-      AWS_ACCESS_KEY_ID: aws_key
-      AWS_SECRET_ACCESS_KEY: aws_secret
-      AWS_REGION: us-east-1
-      AWS_ENDPOINT_URL_SQS: http://localstack:4566
-      AWS_ENDPOINT_URL_CLOUDWATCH: http://localstack:4566
-      AWS_ENDPOINT_URL_S3: http://localstack:4566
-      SQS_QUEUE_BASE_URL: http://sqs.us-east-1.localstack:4566/000000000000
-
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
       OTEL_TRACES_SAMPLER: always_on
