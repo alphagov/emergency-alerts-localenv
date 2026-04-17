@@ -51,6 +51,7 @@
       "*.html": "jinja"
     },
     "json.format.keepLines": true,
-    "git.autofetch": true
+    "git.autofetch": true,
+    "black-formatter.importStrategy": "fromEnvironment"
   }
 }
