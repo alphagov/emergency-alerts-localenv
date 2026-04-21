@@ -1,4 +1,5 @@
 import json
+from time import sleep
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 
@@ -17,6 +18,8 @@ class LambdaHandler(BaseHTTPRequestHandler):
                 },
             }
             response_data = json.dumps(response_payload).encode("utf-8")
+
+            sleep(2)
 
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
