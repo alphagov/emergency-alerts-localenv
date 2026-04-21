@@ -54,6 +54,7 @@ services:
       - . /eas/emergency-alerts-api/environment.sh && bash /start-api.sh
     environment:
       SERVICE_ACTION: run_worker
+      AWS_ENDPOINT_URL_LAMBDA: http://lambda:5000
       WORKER_QUEUE_NAMES: local-dramatiq-periodic-tasks local-dramatiq-broadcast-tasks local-dramatiq-high-priority-tasks
 
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
