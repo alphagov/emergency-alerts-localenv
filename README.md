@@ -66,11 +66,14 @@ It will need copying to `emergency-alerts-localenv/repos/emergency-alerts-admin/
 Modify the `emergency-alerts-localenv/environment.sh` file by adding the credentials for the environment variables:
  - MASTER_USERNAME
  - MASTER_PASSWORD
+ - NOTIFY_API_CLIENT_SECRET
  - SECRET_KEY
  - DANGEROUS_SALT
  - ENCRYPTION_DANGEROUS_SALT
  - ENCRYPTION_SECRET_KEY
  - ADMIN_CLIENT_SECRET
+ - GOVUK_CLIENT_SECRET
+ - GOVUK_ALERTS_PUBLISH_CLIENT_SECRET
  - POSTGRES_PASSWORD
  - POSTGRES_USER
 
