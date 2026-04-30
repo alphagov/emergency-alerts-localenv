@@ -1,7 +1,7 @@
 // Note: This has *not* been extensively tested.
 {
 	"name": "Python 3",
-	"image": "mcr.microsoft.com/devcontainers/python:2-3.12-bookworm",
+	"image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
 	"features": {
 		"ghcr.io/devcontainers/features/node:1": { },
 		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": { }
