@@ -5,6 +5,7 @@ set -e
 awslocal sqs create-queue --queue-name local-periodic-tasks --attributes VisibilityTimeout=300
 awslocal sqs create-queue --queue-name local-govuk-alerts --attributes VisibilityTimeout=300
 awslocal sqs create-queue --queue-name local-broadcast-tasks --attributes VisibilityTimeout=300
+awslocal sqs create-queue --queue-name local-high-priority-tasks --attributes VisibilityTimeout=300
 
 # Create S3 bucket
 awslocal s3 mb s3://local-govuk-alerts
