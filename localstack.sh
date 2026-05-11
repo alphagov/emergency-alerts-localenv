@@ -30,3 +30,9 @@ echo "<html><body><h1>This is Gov.UK</h1><p>Well, not really, but you're probabl
 awslocal s3 cp /tmp/index.html s3://local-govuk-alerts/index.html
 awslocal s3 cp /tmp/index.html s3://local-govuk-alerts-blue/index.html
 awslocal s3 cp /tmp/index.html s3://local-govuk-alerts-green/index.html
+
+# Create ssm parameter to indicate current state of blue/green deployment
+awslocal ssm put-parameter \
+  --name "govuk-website-current" \
+  --type "String" \
+  --value "blue"

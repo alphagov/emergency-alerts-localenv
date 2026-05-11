@@ -131,6 +131,7 @@ services:
       AWS_ENDPOINT_URL_SQS: http://localstack:4566
       AWS_ENDPOINT_URL_CLOUDWATCH: http://localstack:4566
       AWS_ENDPOINT_URL_S3: http://localstack:4566
+      AWS_ENDPOINT_URL_SSM: http://localstack:4566
       SQS_QUEUE_BASE_URL: http://sqs.us-east-1.localstack:4566/000000000000
 
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
@@ -195,7 +196,7 @@ services:
       - "4566:4566"
       # - "4571:4571"
     environment:
-      - SERVICES=s3,sqs,cloudwatch
+      - SERVICES=s3,sqs,cloudwatch,ssm
       - DEBUG=1
       - LOCALSTACK_HOST=localstack
     volumes:

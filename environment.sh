@@ -21,6 +21,7 @@ export GOVUK_ALERTS_S3_BUCKET_NAME='local-govuk-alerts'
 export GOVUK_ALERTS_BLUE_S3_BUCKET_NAME='local-govuk-alerts-blue'
 export GOVUK_ALERTS_GREEN_S3_BUCKET_NAME='local-govuk-alerts-green'
 export GOVUK_ALERTS_ARCHIVE_S3_BUCKET_NAME='local-govuk-alerts-archive'
+export GOVUK_ALERTS_CURRENT_BUCKET_PARAM='govuk-website-current'
 export GOVUK_ALERTS_HOST_URL=http://localhost:6017
 export FASTLY_ENABLED=false
 # If running the functional tests on a host - this is the IP of the host from the container's PoV
