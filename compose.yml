@@ -203,7 +203,7 @@ services:
       - "4566:4566"
       # - "4571:4571"
     environment:
-      - SERVICES=s3,sqs,cloudwatch
+      - SERVICES=s3,sqs,cloudwatch,ssm
       - DEBUG=1
       - LOCALSTACK_HOST=localstack
     volumes:
