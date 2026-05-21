@@ -9,6 +9,8 @@ export AWS_SECRET_ACCESS_KEY=aws_secret
 export AWS_DEFAULT_REGION=us-east-1
 export AWS_ENDPOINT_URL_CLOUDWATCH=http://localstack:4566
 export AWS_ENDPOINT_URL_SQS=http://localstack:4566
+export AWS_ENDPOINT_URL_S3=http://localstack:4566
+export AWS_ENDPOINT_URL_SSM=http://localstack:4566
 
 export FLASK_APP=application.py
 export FLASK_DEBUG=False
