@@ -4,11 +4,20 @@
 export HOST='hosted'
 export ENVIRONMENT='local'
 
+export AWS_ACCESS_KEY_ID=aws_key
+export AWS_SECRET_ACCESS_KEY=aws_secret
+export AWS_DEFAULT_REGION=us-east-1
+export AWS_ENDPOINT_URL_CLOUDWATCH=http://localstack:4566
+export AWS_ENDPOINT_URL_SQS=http://localstack:4566
+export AWS_ENDPOINT_URL_S3=http://localstack:4566
+export AWS_ENDPOINT_URL_SSM=http://localstack:4566
+
 export FLASK_APP=application.py
 export FLASK_DEBUG=False
 export WERKZEUG_DEBUG_PIN=off
 
 export DATABASE='emergency_alerts'
+export TEST_DATABASE='test_emergency_alerts_master'
 export RDS_HOST='pg'
 export RDS_PORT=5432
 

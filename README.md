@@ -81,7 +81,7 @@ Modify the `emergency-alerts-localenv/environment.sh` file by adding the credent
 In general you can largely make these values up, but you'll only want to set these once for a given DB's lifetime.
 
 Now you should be able to ask Docker Compose to come up. We use a shared based image which there isn't great native support for.
-You may also need to ensure Postgres and Localstack are up and running before the others - Celery nopes out immediately if SQS isn't populated.
+You may also need to ensure Postgres and Localstack are up and running before the others.
 ```
 source environment.sh
 docker compose up -d --build utils localstack pg jaeger lambda
