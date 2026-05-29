@@ -5,9 +5,9 @@
 set -ex
 
 # Prep environment.sh with some good-enough values
-sed -i.orig 's/_KEY=$/_KEY=test-env/' environment.sh
-sed -i.orig 's/_SECRET=$/_SECRET=test-env/' environment.sh
-sed -i.orig 's/_SALT=$/_SALT=test-env/' environment.sh
+sed -i.orig 's/_KEY=$/_KEY='${TEST_SECRET:-test-env}'/' environment.sh
+sed -i.orig 's/_SECRET=$/_SECRET='${TEST_SECRET:-test-env}'/' environment.sh
+sed -i.orig 's/_SALT=$/_SALT='${TEST_SECRET:-test-env}'/' environment.sh
 sed -i.orig 's/POSTGRES_USER=$/POSTGRES_USER=eas-user/' environment.sh
 sed -i.orig 's/MASTER_USERNAME=$/MASTER_USERNAME=eas-user/' environment.sh
 sed -i.orig 's/_PASSWORD=$/_PASSWORD=password/' environment.sh
