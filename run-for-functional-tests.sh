@@ -18,7 +18,8 @@ git clone --filter=tree:0 -b ${REPO_BRANCH_API:-main} https://github.com/alphago
 git clone --filter=tree:0 -b ${REPO_BRANCH_GOVUK:-main} https://github.com/alphagov/emergency-alerts-govuk.git
 git clone --filter=tree:0 -b ${REPO_BRANCH_ADMIN:-main} https://github.com/alphagov/emergency-alerts-admin.git
 git clone --filter=tree:0 -b ${REPO_BRANCH_UTILS:-main} https://github.com/alphagov/emergency-alerts-utils.git
-git clone --filter=tree:0 -b ${REPO_BRANCH_TOOLING:-main} https://github.com/alphagov/emergency-alerts-tooling.git
+# Tooling is private
+git clone --filter=tree:0 -b ${REPO_BRANCH_TOOLING:-main} https://${EAS_GITHUB_RUNNER_RO_TOKEN}@github.com/alphagov/emergency-alerts-tooling.git
 
 echo "######### Cloned all repos"
 
