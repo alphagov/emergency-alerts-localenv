@@ -41,6 +41,9 @@ docker compose up -d --build utils localstack pg jaeger lambda
 docker compose build api
 docker compose up -d api db-init
 
+# We haven't built admin and govuk yet, so this'll do that while db-init is running in the background
+docker compose up -d
+
 while true; do
     if docker compose ps -q db-init | grep -q .; then
         echo "DB init is still running..."
@@ -50,5 +53,3 @@ while true; do
         break
     fi
 done
-
-docker compose up -d
