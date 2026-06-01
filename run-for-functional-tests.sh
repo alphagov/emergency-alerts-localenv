@@ -41,8 +41,12 @@ docker compose up -d --build utils localstack pg jaeger lambda
 docker compose build api
 docker compose up -d api db-init
 
+echo "######### Started ancillary components and API/DB-init"
+
 # We haven't built admin and govuk yet, so this'll do that while db-init is running in the background
 docker compose up -d
+
+set +x
 
 while true; do
     if docker compose ps -q db-init | grep -q .; then

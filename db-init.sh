@@ -45,9 +45,12 @@ END;
 \$\$;
 EOSQL
 
+# Generate a secret for the API key based off the ENCRYPTION_SECRET_KEY
+FUNCTIONAL_TEST_API_KEY_SECRET=$(python /eas/gen-api-key-secret.py)
+
 # And now we can put data in those tables as the non-superuser
 cd /eas/emergency-alerts-tooling/ansible/environments/development
-ansible-playbook -e "database_host=pg database_username=$MASTER_USERNAME database_password=$MASTER_PASSWORD email_address=eas.admin@digital.cabinet-office.gov.uk phone_number=07700900111" 02-database-setup-after-migrations.yml
+ansible-playbook -e "database_host=pg database_username=$MASTER_USERNAME database_password=$MASTER_PASSWORD functional_test_api_key_secret=$FUNCTIONAL_TEST_API_KEY_SECRET email_address=eas.admin@digital.cabinet-office.gov.uk phone_number=07700900111" 02-database-setup-after-migrations.yml
 
 if [ $? -eq 0 ]
 then

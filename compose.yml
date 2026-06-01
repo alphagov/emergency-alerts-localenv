@@ -159,7 +159,6 @@ services:
       - localstack
       - api
 
-  # Uncomment to run first database setup (creates tables and migrations)
   db-init:
     image: localhost/eas-localenv-api
     user: root # Override so we can install packages
@@ -172,6 +171,7 @@ services:
 
       - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/emergency-alerts-api/environment.sh:ro,z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/db-init.sh:/eas/db-init.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/gen-api-key-secret.py:/eas/gen-api-key-secret.py:ro,z
     depends_on:
       - pg
 
