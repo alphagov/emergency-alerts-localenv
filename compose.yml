@@ -140,7 +140,8 @@ services:
     command:
       - bash
       - -c
-      - . /eas/emergency-alerts-govuk/environment.sh && unset FLASK_APP && bash /start-govuk.sh
+      # GovUK doesn't have an application.py file... So we need Flask to import the 'app' module instead:
+      - . /eas/emergency-alerts-govuk/environment.sh && export FLASK_APP=app && bash /start-govuk.sh
     ports:
       - "6017:6017"
     environment:
