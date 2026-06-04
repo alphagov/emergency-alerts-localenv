@@ -68,6 +68,8 @@ set -x
 docker compose up -d
 set +x
 
+echo "::endgroup::"
+
 while true; do
     if docker compose ps -q db-init | grep -q .; then
         echo "DB init is still running..."
