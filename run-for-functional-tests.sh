@@ -26,7 +26,12 @@ git clone --filter=tree:0 -b ${REPO_BRANCH_TOOLING:-main} https://${EAS_GITHUB_R
 set +x
 
 echo "::endgroup::\n::group::Resolved Git repositories"
-echo "Localenv: $(git show -s --pretty=format:"%H - %s)"
+echo "Localenv: $(git show -s --pretty='format:%H - %s')"
+echo "Functional Tests: $(cd ../../; git show -s --pretty='format:%H - %s')"
+echo "API: $(cd emergency-alerts-api; git show -s --pretty='format:%H - %s')"
+echo "GovUK: $(cd emergency-alerts-govuk; git show -s --pretty='format:%H - %s')"
+echo "Admin: $(cd emergency-alerts-admin; git show -s --pretty='format:%H - %s')"
+echo "Utils: $(cd emergency-alerts-utils; git show -s --pretty='format:%H - %s')"
 
 echo "::endgroup::\n::group::Prep services (generate version and compile JS/CSS)"
 set -x
