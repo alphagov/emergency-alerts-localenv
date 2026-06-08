@@ -13,7 +13,8 @@ sed -i.orig 's/POSTGRES_USER=$/POSTGRES_USER=eas-user/' environment.sh
 sed -i.orig 's/MASTER_USERNAME=$/MASTER_USERNAME=eas-user/' environment.sh
 sed -i.orig 's/_PASSWORD=$/_PASSWORD=password/' environment.sh
 
-echo "::endgroup::\n::group::Clone repositories"
+echo "::endgroup::"
+echo "::group::Clone repositories"
 set -x
 # Partial clone repos but allowing the branch to be overridden by env
 cd $(dirname "$0")/repos
@@ -25,7 +26,8 @@ git clone --filter=tree:0 -b ${REPO_BRANCH_UTILS:-main} https://github.com/alpha
 git clone --filter=tree:0 -b ${REPO_BRANCH_TOOLING:-main} https://${EAS_GITHUB_RUNNER_RO_TOKEN}@github.com/alphagov/emergency-alerts-tooling.git
 set +x
 
-echo "::endgroup::\n::group::Resolved Git repositories"
+echo "::endgroup::"
+echo "::group::Resolved Git repositories"
 echo "Localenv: $(git show -s --pretty='format:%H - %s')"
 echo "Functional Tests: $(cd ../../; git show -s --pretty='format:%H - %s')"
 echo "API: $(cd emergency-alerts-api; git show -s --pretty='format:%H - %s')"
@@ -33,7 +35,8 @@ echo "GovUK: $(cd emergency-alerts-govuk; git show -s --pretty='format:%H - %s')
 echo "Admin: $(cd emergency-alerts-admin; git show -s --pretty='format:%H - %s')"
 echo "Utils: $(cd emergency-alerts-utils; git show -s --pretty='format:%H - %s')"
 
-echo "::endgroup::\n::group::Prep services (generate version and compile JS/CSS)"
+echo "::endgroup::"
+echo "::group::Prep services (generate version and compile JS/CSS)"
 set -x
 # Get the repos to be 'runnable' (i.e. have version.py, JS built, and some location data)
 cd emergency-alerts-govuk
@@ -46,23 +49,27 @@ make generate-version-file && npm ci && npm run build && cp app/broadcast_areas/
 cd ../../
 set +x
 
-echo "::endgroup::\n::group::Build utils and start ancillaries"
+echo "::endgroup::"
+echo "::group::Build utils and start ancillaries"
 set -x
 source environment.sh
 docker compose up -d --build utils localstack pg jaeger lambda
 set +x
 
-echo "::endgroup::\n::group::Build API"
+echo "::endgroup::"
+echo "::group::Build API"
 set -x
 docker compose build api
 set +x
 
-echo "::endgroup::\n::group::Start API and DB init"
+echo "::endgroup::"
+echo "::group::Start API and DB init"
 set -x
 docker compose up -d api db-init
 set +x
 
-echo "::endgroup::\n::group::Build and start other containers"
+echo "::endgroup::"
+echo "::group::Build and start other containers"
 set -x
 # We haven't built admin and govuk yet, so this'll do that while db-init is running in the background
 docker compose up -d
