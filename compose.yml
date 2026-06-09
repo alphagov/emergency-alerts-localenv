@@ -16,6 +16,7 @@ services:
       args:
         BASE_IMAGE: localhost/eas-localenv-base
     image: localhost/eas-localenv-api
+    restart: always
     command:
       - bash
       - -c
@@ -48,6 +49,7 @@ services:
       args:
         BASE_IMAGE: localhost/eas-localenv-base
     image: localhost/eas-localenv-api
+    restart: always
     command:
       - bash
       - -c
@@ -79,6 +81,7 @@ services:
       args:
         BASE_IMAGE: localhost/eas-localenv-base
     image: localhost/eas-localenv-api
+    restart: always
     command:
       - bash
       - -c
@@ -108,6 +111,7 @@ services:
       args:
         BASE_IMAGE: localhost/eas-localenv-base
     image: localhost/eas-localenv-admin
+    restart: always
     command:
       - bash
       - -c
@@ -137,10 +141,12 @@ services:
       args:
         BASE_IMAGE: localhost/eas-localenv-base
     image: localhost/eas-localenv-govuk
+    restart: always
     command:
       - bash
       - -c
-      - . /eas/emergency-alerts-govuk/environment.sh && unset FLASK_APP && bash /start-govuk.sh
+      # GovUK doesn't have an application.py file... So we need Flask to import the 'app' module instead:
+      - . /eas/emergency-alerts-govuk/environment.sh && export FLASK_APP=app && bash /start-govuk.sh
     ports:
       - "6017:6017"
     environment:
@@ -159,7 +165,6 @@ services:
       - localstack
       - api
 
-  # Uncomment to run first database setup (creates tables and migrations)
   db-init:
     image: localhost/eas-localenv-api
     user: root # Override so we can install packages
@@ -172,6 +177,7 @@ services:
 
       - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/emergency-alerts-api/environment.sh:ro,z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/db-init.sh:/eas/db-init.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/gen-api-key-secret.py:/eas/gen-api-key-secret.py:ro,z
     depends_on:
       - pg
 
@@ -191,6 +197,7 @@ services:
   # with a hardcoded response
   lambda:
     image: python:3.12-alpine
+    restart: always
     command:
       - "python"
       - "/lambda-api.py"
@@ -199,6 +206,7 @@ services:
 
   localstack:
     image: localstack/localstack:4.11.1
+    restart: always
     ports:
       - "4566:4566"
       # - "4571:4571"
@@ -211,6 +219,7 @@ services:
 
   jaeger:
     image: cr.jaegertracing.io/jaegertracing/jaeger:2.15.1
+    restart: always
     environment:
       - LOG_LEVEL=debug
     ports:
