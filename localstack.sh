@@ -39,3 +39,7 @@ awslocal ssm put-parameter \
   --name "govuk-website-current" \
   --type "String" \
   --value "blue"
+
+# Verify test email identity
+awslocal ses verify-email-identity --email-address support@localhost
+
