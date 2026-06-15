@@ -24,6 +24,10 @@ export MASTER_PASSWORD=$POSTGRES_PASSWORD
 flask db upgrade
 echo "Flask done"
 
+# Copies the population data from scripts/population_data.csv to the database table `populations`
+export $PGPASSWORD=$POSTGRES_PASSWORD
+bash scripts/add-pop-data.sh
+
 # Now we've ran Flask migrations we reset MASTER_USERNAME to the local Postgres user (non-superuser)
 . /eas/emergency-alerts-api/environment.sh
 
