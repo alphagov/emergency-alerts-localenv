@@ -15,6 +15,7 @@ awslocal s3 mb s3://local-govuk-alerts
 awslocal s3 mb s3://local-govuk-alerts-blue
 awslocal s3 mb s3://local-govuk-alerts-green
 awslocal s3 mb s3://local-govuk-alerts-archive
+awslocal s3 mb s3://local-area-sources
 
 # Enable static website hosting
 awslocal s3 website s3://local-govuk-alerts/ \
@@ -33,6 +34,7 @@ echo "<html><body><h1>This is Gov.UK</h1><p>Well, not really, but you're probabl
 awslocal s3 cp /tmp/index.html s3://local-govuk-alerts/index.html
 awslocal s3 cp /tmp/index.html s3://local-govuk-alerts-blue/index.html
 awslocal s3 cp /tmp/index.html s3://local-govuk-alerts-green/index.html
+awslocal s3 cp /area-data/population_data.csv s3://local-area-sources/population_data.csv
 
 # Create ssm parameter to indicate current state of blue/green deployment
 awslocal ssm put-parameter \
