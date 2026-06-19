@@ -24,10 +24,6 @@ export MASTER_PASSWORD=$POSTGRES_PASSWORD
 flask db upgrade
 echo "Flask done"
 
-# Copies the population data from scripts/population_data.csv to the database table `populations`
-export $PGPASSWORD=$POSTGRES_PASSWORD
-bash scripts/add-pop-data.sh
-
 # Now we've ran Flask migrations we reset MASTER_USERNAME to the local Postgres user (non-superuser)
 . /eas/emergency-alerts-api/environment.sh
 
@@ -48,6 +44,9 @@ BEGIN
 END;
 \$\$;
 EOSQL
+
+# Copies the population data from the bucket to the database table `populations`
+python scripts/add_pop_data.py
 
 # Generate a secret for the API key based off the ENCRYPTION_SECRET_KEY
 FUNCTIONAL_TEST_API_KEY_SECRET=$(python /eas/gen-api-key-secret.py)
