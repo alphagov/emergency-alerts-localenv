@@ -46,7 +46,7 @@ END;
 EOSQL
 
 # Copies the population data from the bucket to the database table `populations`
-python scripts/add_pop_data.py
+python scripts/adding_area_data/add_population_data.py
 
 # Generate a secret for the API key based off the ENCRYPTION_SECRET_KEY
 FUNCTIONAL_TEST_API_KEY_SECRET=$(python /eas/gen-api-key-secret.py)
