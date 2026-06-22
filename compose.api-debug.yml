@@ -1,0 +1,37 @@
+# Opt-in debug overlay for running the API on the host (e.g. the VSCode Flask
+# debugger) instead of in the `api` container.
+#
+# Why only `api` is listed: in this stack the `admin`/`govuk` *containers* call
+# the API by the Docker service name `api:6011`. When you stop the `api`
+# container to debug it locally, that name stops resolving -> the admin/govuk
+# logs show NewConnectionError(host='api', port=6011). `api:host-gateway`
+# re-points the name at the Docker host, where the local debugger listens on
+# 6011 (launch.json binds --host=0.0.0.0).
+#
+# Debugging admin or govuk does NOT need an entry here: they're reached from the
+# browser on localhost:6012 / localhost:6017, so just stop that container and
+# run it locally.
+#
+# This file is NOT named compose.override.yml on purpose, so Compose does not
+# auto-load it. Switch it on by adding it to COMPOSE_FILE (see environment.sh /
+# the README), e.g.:
+#   export COMPOSE_FILE=compose.yml:compose.api-debug.yml
+# Unset COMPOSE_FILE (or drop compose.api-debug.yml from it) to go back to the
+# all-in-Docker stack. Nothing to delete.
+
+services:
+  admin:
+    extra_hosts:
+      - "api:host-gateway"
+
+  govuk:
+    extra_hosts:
+      - "api:host-gateway"
+
+  api-worker:
+    extra_hosts:
+      - "api:host-gateway"
+
+  api-periodiq:
+    extra_hosts:
+      - "api:host-gateway"

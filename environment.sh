@@ -43,18 +43,18 @@ export FUNCTIONAL_TEST_USER_ID='44153bb8-db31-4cb0-8cee-b909a5482d1a'
 
 # Confusingly master here refers to the application's DB user (i.e. not the DB superuser)
 # Make sure this username is different to POSTGRES_USER below
-export MASTER_USERNAME=
-export MASTER_PASSWORD=
+export MASTER_USERNAME=eas-user
+export MASTER_PASSWORD=root
 
-export NOTIFY_API_CLIENT_SECRET=
-export SECRET_KEY=
-export DANGEROUS_SALT=
-export ENCRYPTION_DANGEROUS_SALT=
-export ENCRYPTION_SECRET_KEY=
-export ADMIN_CLIENT_SECRET=
-export GOVUK_CLIENT_SECRET=
-export GOVUK_ALERTS_PUBLISH_CLIENT_SECRET=
+export NOTIFY_API_CLIENT_SECRET=notify-api-client-secret
+export SECRET_KEY=secret-key
+export DANGEROUS_SALT=dangerous-salt
+export ENCRYPTION_DANGEROUS_SALT=encryption-dangerous-salt
+export ENCRYPTION_SECRET_KEY=encryption-secret-key
+export ADMIN_CLIENT_SECRET=admin-client-secret
+export GOVUK_CLIENT_SECRET=govuk-client-secret
+export GOVUK_ALERTS_PUBLISH_CLIENT_SECRET=govuk-alerts-publish-client-secret
 
 # The superuser within Postgres
-export POSTGRES_USER=
-export POSTGRES_PASSWORD=
+export POSTGRES_USER=postgres
+export POSTGRES_PASSWORD=root

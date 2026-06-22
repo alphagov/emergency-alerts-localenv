@@ -132,7 +132,6 @@ services:
       OTEL_METRICS_EXPORTER: none
     depends_on:
       - localstack
-      - api
 
   govuk:
     build:
@@ -163,7 +162,6 @@ services:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-govuk/scripts/start-govuk.sh:/start-govuk.sh:ro,z
     depends_on:
       - localstack
-      - api
 
   db-init:
     image: localhost/eas-localenv-api
