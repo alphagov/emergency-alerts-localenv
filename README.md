@@ -87,10 +87,6 @@ source environment.sh
 docker compose up -d --build utils localstack pg jaeger lambda
 docker compose build api
 docker compose up -d api db-init
-# if debugging the api
-export COMPOSE_FILE=compose.yml:compose.api-debug.yml
-# else
-unset COMPOSE_FILE
 docker compose up -d
 
 For debugging:
