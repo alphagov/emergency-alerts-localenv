@@ -32,6 +32,8 @@ export GOVUK_ALERTS_BLUE_S3_BUCKET_NAME='local-govuk-alerts-blue'
 export GOVUK_ALERTS_GREEN_S3_BUCKET_NAME='local-govuk-alerts-green'
 export GOVUK_ALERTS_ARCHIVE_S3_BUCKET_NAME='local-govuk-alerts-archive'
 export GOVUK_ALERTS_CURRENT_BUCKET_PARAM='govuk-website-current'
+# Cloudfront endpoint not available in free localstack, so disable
+export GOVUK_ALERTS_CLOUDFRONT_ENABLED=false
 export GOVUK_ALERTS_HOST_URL=http://localhost:6017
 export FASTLY_ENABLED=false
 # If running the functional tests on a host - this is the IP of the host from the container's PoV
@@ -43,18 +45,18 @@ export FUNCTIONAL_TEST_USER_ID='44153bb8-db31-4cb0-8cee-b909a5482d1a'
 
 # Confusingly master here refers to the application's DB user (i.e. not the DB superuser)
 # Make sure this username is different to POSTGRES_USER below
-export MASTER_USERNAME=eas-user
-export MASTER_PASSWORD=root
+export MASTER_USERNAME=
+export MASTER_PASSWORD=
 
-export NOTIFY_API_CLIENT_SECRET=notify-api-client-secret
-export SECRET_KEY=secret-key
-export DANGEROUS_SALT=dangerous-salt
-export ENCRYPTION_DANGEROUS_SALT=encryption-dangerous-salt
-export ENCRYPTION_SECRET_KEY=encryption-secret-key
-export ADMIN_CLIENT_SECRET=admin-client-secret
-export GOVUK_CLIENT_SECRET=govuk-client-secret
-export GOVUK_ALERTS_PUBLISH_CLIENT_SECRET=govuk-alerts-publish-client-secret
+export NOTIFY_API_CLIENT_SECRET=
+export SECRET_KEY=
+export DANGEROUS_SALT=
+export ENCRYPTION_DANGEROUS_SALT=
+export ENCRYPTION_SECRET_KEY=
+export ADMIN_CLIENT_SECRET=
+export GOVUK_CLIENT_SECRET=
+export GOVUK_ALERTS_PUBLISH_CLIENT_SECRET=
 
 # The superuser within Postgres
-export POSTGRES_USER=postgres
-export POSTGRES_PASSWORD=root
+export POSTGRES_USER=
+export POSTGRES_PASSWORD=
