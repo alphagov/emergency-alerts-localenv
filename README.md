@@ -87,8 +87,16 @@ source environment.sh
 docker compose up -d --build utils localstack pg jaeger lambda
 docker compose build api
 docker compose up -d api db-init
-# You might want to wait for API to be up
 docker compose up -d
+
+For debugging:
+docker compose stop admin  # then start admin locally on port 6012
+docker compose stop api    # then start api locally on port 6011
+docker compose stop govuk  # then start govuk locally on port 6017
+
+Ensure that you have the follwing `hosts` file entry:
+127.0.0.1 localstack api pg
+
 ```
 
 This should automatically provision Postgres with a test database and auto-populate LocalStack with 'AWS' resources.

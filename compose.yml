@@ -70,6 +70,8 @@ services:
 
       - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/emergency-alerts-api/environment.sh:ro,z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro,z
+    extra_hosts:
+      - "api:host-gateway"
     depends_on:
       - pg
       - localstack
@@ -100,6 +102,8 @@ services:
 
       - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/emergency-alerts-api/environment.sh:ro,z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro,z
+    extra_hosts:
+      - "api:host-gateway"
     depends_on:
       - pg
       - localstack
@@ -130,9 +134,10 @@ services:
       OTEL_TRACES_SAMPLER: always_on
       OTEL_SERVICE_NAME: admin
       OTEL_METRICS_EXPORTER: none
+    extra_hosts:
+      - "api:host-gateway"
     depends_on:
       - localstack
-      - api
 
   govuk:
     build:
@@ -161,9 +166,10 @@ services:
 
       - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/emergency-alerts-govuk/environment.sh:ro,z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-govuk/scripts/start-govuk.sh:/start-govuk.sh:ro,z
+    extra_hosts:
+      - "api:host-gateway"
     depends_on:
       - localstack
-      - api
 
   db-init:
     image: localhost/eas-localenv-api
