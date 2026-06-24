@@ -27,6 +27,7 @@ export USE_RDS_IAM_AUTH="false"
 export API_HOST_NAME=http://api:6011
 export ADMIN_EXTERNAL_URL=http://localhost:6012
 export ADMIN_ACTION_ALLOW_SELF_APPROVAL=true
+export AREAS_SOURCE_BUCKET_NAME='local-area-sources'
 export GOVUK_ALERTS_S3_BUCKET_NAME='local-govuk-alerts'
 export GOVUK_ALERTS_BLUE_S3_BUCKET_NAME='local-govuk-alerts-blue'
 export GOVUK_ALERTS_GREEN_S3_BUCKET_NAME='local-govuk-alerts-green'
