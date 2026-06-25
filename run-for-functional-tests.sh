@@ -34,6 +34,7 @@ echo "API: $(cd emergency-alerts-api; git show -s --pretty='format:%H - %s')"
 echo "GovUK: $(cd emergency-alerts-govuk; git show -s --pretty='format:%H - %s')"
 echo "Admin: $(cd emergency-alerts-admin; git show -s --pretty='format:%H - %s')"
 echo "Utils: $(cd emergency-alerts-utils; git show -s --pretty='format:%H - %s')"
+echo "Tooling: $(cd emergency-alerts-tooling; git show -s --pretty='format:%H - %s')"
 
 echo "##[endgroup]"
 echo "##[group]Prep services (generate version and compile JS/CSS)"
