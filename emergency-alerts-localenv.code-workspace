@@ -1,7 +1,8 @@
 {
   "folders": [
     {
-      "path": "."
+      "path": ".",
+      "name": "emergency-alerts-localenv"
     },
     {
       "path": "repos/emergency-alerts-admin"
@@ -52,6 +53,8 @@
     },
     "json.format.keepLines": true,
     "git.autofetch": true,
-    "black-formatter.importStrategy": "fromEnvironment"
-  }
+    "black-formatter.importStrategy": "fromEnvironment",
+    "python.testing.pytestEnabled": true,
+    "python.envFile": "${workspaceFolder:emergency-alerts-localenv}/environment.env",
+  },
 }

@@ -8,7 +8,7 @@ set -e
 set -a && . /eas/emergency-alerts-api/environment.env && set +a
 
 psql postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@pg:5432/postgres <<-EOSQL
-    CREATE DATABASE $TEST_DATABASE;
+    CREATE DATABASE ${TEST_DATABASE}_master;
     CREATE DATABASE $DATABASE;
 EOSQL
 
