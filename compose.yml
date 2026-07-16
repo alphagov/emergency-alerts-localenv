@@ -23,6 +23,8 @@ services:
       - . /eas/emergency-alerts-api/environment.sh && bash /start-api.sh
     environment:
       SERVICE_ACTION: run_api
+      DEBUGPY_PORT: "3011"
+
       AWS_ENDPOINT_URL_LAMBDA: http://lambda:5000
 
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
@@ -31,6 +33,7 @@ services:
       OTEL_SERVICE_NAME: api
       OTEL_METRICS_EXPORTER: none
     ports:
+      - "3011:3011"
       - "6011:6011"
     volumes:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api:/eas/emergency-alerts-api:z
@@ -56,6 +59,8 @@ services:
       - . /eas/emergency-alerts-api/environment.sh && bash /start-api.sh
     environment:
       SERVICE_ACTION: run_worker
+      DEBUGPY_PORT: "3010"
+
       AWS_ENDPOINT_URL_LAMBDA: http://lambda:5000
       WORKER_QUEUE_NAMES: local-dramatiq-periodic-tasks local-dramatiq-broadcast-tasks local-dramatiq-high-priority-tasks
 
@@ -64,6 +69,8 @@ services:
       OTEL_TRACES_SAMPLER: always_on
       OTEL_SERVICE_NAME: api-worker
       OTEL_METRICS_EXPORTER: none
+    ports:
+      - "3010:3010"
     volumes:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api:/eas/emergency-alerts-api:z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
@@ -121,6 +128,7 @@ services:
       - -c
       - . /eas/emergency-alerts-admin/environment.sh && bash /start.sh
     ports:
+      - "3012:3012"
       - "6012:6012"
     volumes:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-admin:/eas/emergency-alerts-admin:z
@@ -129,6 +137,8 @@ services:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/emergency-alerts-admin/environment.sh:ro,z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-admin/scripts/start.sh:/start.sh:ro,z
     environment:
+      DEBUGPY_PORT: "3012"
+
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
       OTEL_TRACES_SAMPLER: always_on
@@ -150,11 +160,13 @@ services:
     command:
       - bash
       - -c
-      # GovUK doesn't have an application.py file... So we need Flask to import the 'app' module instead:
+      # GovUK doesn't have an application.py file... So we need Flask to import the 'app' module/folder instead:
       - . /eas/emergency-alerts-govuk/environment.sh && export FLASK_APP=app && bash /start-govuk.sh
     ports:
-      - "6017:6017"
+      - "3017:3017"
     environment:
+      DEBUGPY_PORT: "3017"
+
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
       OTEL_TRACES_SAMPLER: always_on
