@@ -1,67 +1,70 @@
 #!/usr/bin/env bash
-#localenv
 
-export HOST='hosted'
-export ENVIRONMENT='local'
+# These do *not* have "export" in, on purpose.
+# For VS Code's debugger we use this as an envFile.
+# For containers we use this as a shell script, but we enable auto-export when sourcing it.
 
-export AWS_ACCESS_KEY_ID=aws_key
-export AWS_SECRET_ACCESS_KEY=aws_secret
-export AWS_DEFAULT_REGION=us-east-1
-export AWS_ENDPOINT_URL_CLOUDWATCH=http://localstack:4566
-export AWS_ENDPOINT_URL_SQS=http://localstack:4566
-export AWS_ENDPOINT_URL_S3=http://localstack:4566
-export AWS_ENDPOINT_URL_SES=http://localstack:4566
-export AWS_ENDPOINT_URL_SSM=http://localstack:4566
+HOST='hosted'
+ENVIRONMENT='local'
 
-export FLASK_APP=application.py
-export FLASK_DEBUG=False
-export WERKZEUG_DEBUG_PIN=off
+AWS_ACCESS_KEY_ID=aws_key
+AWS_SECRET_ACCESS_KEY=aws_secret
+AWS_DEFAULT_REGION=us-east-1
+AWS_ENDPOINT_URL_CLOUDWATCH=http://localstack:4566
+AWS_ENDPOINT_URL_SQS=http://localstack:4566
+AWS_ENDPOINT_URL_S3=http://localstack:4566
+AWS_ENDPOINT_URL_SES=http://localstack:4566
+AWS_ENDPOINT_URL_SSM=http://localstack:4566
 
-export DATABASE='emergency_alerts'
-export TEST_DATABASE='test_emergency_alerts_master'
-export RDS_HOST='pg'
-export RDS_PORT=5432
+FLASK_APP=application.py
+FLASK_DEBUG=False
+WERKZEUG_DEBUG_PIN=off
 
-export USE_RDS_IAM_AUTH="false"
+DATABASE='emergency_alerts'
+TEST_DATABASE='test_emergency_alerts_master'
+RDS_HOST='pg'
+RDS_PORT=5432
 
-export API_HOST_NAME=http://api:6011
-export ADMIN_EXTERNAL_URL=http://localhost:6012
-export ADMIN_ACTION_ALLOW_SELF_APPROVAL=true
-export AREAS_SOURCE_BUCKET_NAME='local-area-sources'
+USE_RDS_IAM_AUTH="false"
+
+API_HOST_NAME=http://api:6011
+ADMIN_EXTERNAL_URL=http://localhost:6012
+ADMIN_ACTION_ALLOW_SELF_APPROVAL=true
+AREAS_SOURCE_BUCKET_NAME='local-area-sources'
 # Version determines where area data copied to, in localstack.sh
-export AREAS_SOURCE_VERSION='1.0.0'
-export GOVUK_ALERTS_S3_BUCKET_NAME='local-govuk-alerts'
-export GOVUK_ALERTS_BLUE_S3_BUCKET_NAME='local-govuk-alerts-blue'
-export GOVUK_ALERTS_GREEN_S3_BUCKET_NAME='local-govuk-alerts-green'
-export GOVUK_ALERTS_ARCHIVE_S3_BUCKET_NAME='local-govuk-alerts-archive'
-export GOVUK_ALERTS_CURRENT_BUCKET_PARAM='govuk-website-current'
+AREAS_SOURCE_VERSION='1.0.0'
+GOVUK_ALERTS_S3_BUCKET_NAME='local-govuk-alerts'
+GOVUK_ALERTS_BLUE_S3_BUCKET_NAME='local-govuk-alerts-blue'
+GOVUK_ALERTS_GREEN_S3_BUCKET_NAME='local-govuk-alerts-green'
+GOVUK_ALERTS_ARCHIVE_S3_BUCKET_NAME='local-govuk-alerts-archive'
+GOVUK_ALERTS_CURRENT_BUCKET_PARAM='govuk-website-current'
 # Cloudfront endpoint not available in free localstack, so disable
-export GOVUK_ALERTS_CLOUDFRONT_ENABLED=false
-export GOVUK_ALERTS_HOST_URL=http://localhost:6017
+GOVUK_ALERTS_CLOUDFRONT_ENABLED=false
+GOVUK_ALERTS_HOST_URL=http://localhost:6017
 # SesV2 endpoint not available in free localstack, do disable
-export SES_ENABLED=false
-export FASTLY_ENABLED=false
+SES_ENABLED=false
+FASTLY_ENABLED=false
 # If running the functional tests on a host - this is the IP of the host from the container's PoV
 # (at least from the perspective of Docker Desktop on macOS)
-export FUNCTIONAL_TEST_IPS='172.18.0.1'
-export FUNCTIONAL_TEST_USER_ID='44153bb8-db31-4cb0-8cee-b909a5482d1a'
+FUNCTIONAL_TEST_IPS='172.18.0.1'
+FUNCTIONAL_TEST_USER_ID='44153bb8-db31-4cb0-8cee-b909a5482d1a'
 
 # ----
 
 # Confusingly master here refers to the application's DB user (i.e. not the DB superuser)
 # Make sure this username is different to POSTGRES_USER below
-export MASTER_USERNAME=
-export MASTER_PASSWORD=
+MASTER_USERNAME=
+MASTER_PASSWORD=
 
-export NOTIFY_API_CLIENT_SECRET=
-export SECRET_KEY=
-export DANGEROUS_SALT=
-export ENCRYPTION_DANGEROUS_SALT=
-export ENCRYPTION_SECRET_KEY=
-export ADMIN_CLIENT_SECRET=
-export GOVUK_CLIENT_SECRET=
-export GOVUK_ALERTS_PUBLISH_CLIENT_SECRET=
+NOTIFY_API_CLIENT_SECRET=
+SECRET_KEY=
+DANGEROUS_SALT=
+ENCRYPTION_DANGEROUS_SALT=
+ENCRYPTION_SECRET_KEY=
+ADMIN_CLIENT_SECRET=
+GOVUK_CLIENT_SECRET=
+GOVUK_ALERTS_PUBLISH_CLIENT_SECRET=
 
 # The superuser within Postgres
-export POSTGRES_USER=
-export POSTGRES_PASSWORD=
+POSTGRES_USER=
+POSTGRES_PASSWORD=
