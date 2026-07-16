@@ -64,7 +64,7 @@ source venv/bin/activate; make bootstrap; deactivate
 Admin requires a large SQLite Database of location libraries. You can fetch this from the `infra-mgt` AWS account in an S3 bucket.
 It will need copying to `emergency-alerts-localenv/repos/emergency-alerts-admin/app/broadcast_areas/broadcast-areas.sqlite3`.
 
-Modify the `emergency-alerts-localenv/environment.sh` file by adding the credentials for the environment variables:
+Modify the `emergency-alerts-localenv/environment.env` file by adding the credentials for the environment variables:
  - MASTER_USERNAME
  - MASTER_PASSWORD
  - NOTIFY_API_CLIENT_SECRET
@@ -83,7 +83,8 @@ In general you can largely make these values up, but you'll only want to set the
 Now you should be able to ask Docker Compose to come up. We use a shared based image which there isn't great native support for.
 You may also need to ensure Postgres and Localstack are up and running before the others.
 ```
-source environment.sh
+# For Postgres container envs to be populated:
+set -a && source environment.env && set +a
 docker compose up -d --build utils localstack pg jaeger lambda
 docker compose build api
 docker compose up -d api db-init
