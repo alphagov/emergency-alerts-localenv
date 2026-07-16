@@ -19,5 +19,8 @@
 	},
 	"remoteEnv": {
 		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
-	}
+	},
+	"runArgs": [
+		"--network=host"
+	]
 }
