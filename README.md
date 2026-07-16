@@ -62,6 +62,9 @@ source venv/bin/activate; make bootstrap; deactivate
 cd ../emergency-alerts-utils
 python -m venv venv
 source venv/bin/activate; make bootstrap; deactivate
+cd ../emergency-alerts-functional-tests
+python -m venv venv
+source venv/bin/activate; make bootstrap; deactivate
 ```
 
 Admin requires a large SQLite Database of location libraries. You can fetch this from the `infra-mgt` AWS account in an S3 bucket.
