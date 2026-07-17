@@ -111,7 +111,9 @@ services:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api:/eas/emergency-alerts-api:z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
 
-      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.env:/eas/emergency-alerts-api/environment.env:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.env:/eas/environment.env:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-runtime.env:/eas/environment-runtime.env:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/environment.sh:ro,z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro,z
     extra_hosts:
       - "api:host-gateway"
