@@ -16,6 +16,10 @@ services:
       args:
         BASE_IMAGE: localhost/eas-localenv-base
     image: localhost/eas-localenv-api
+    develop:
+      watch:
+        - action: restart
+          path: ./repos/emergency-alerts-api/app
     restart: always
     command:
       - bash
@@ -54,6 +58,10 @@ services:
       args:
         BASE_IMAGE: localhost/eas-localenv-base
     image: localhost/eas-localenv-api
+    develop:
+      watch:
+        - action: restart
+          path: ./repos/emergency-alerts-api/app
     restart: always
     command:
       - bash
@@ -94,6 +102,10 @@ services:
       args:
         BASE_IMAGE: localhost/eas-localenv-base
     image: localhost/eas-localenv-api
+    develop:
+      watch:
+        - action: restart
+          path: ./repos/emergency-alerts-api/app
     restart: always
     command:
       - bash
@@ -128,6 +140,10 @@ services:
       args:
         BASE_IMAGE: localhost/eas-localenv-base
     image: localhost/eas-localenv-admin
+    develop:
+      watch:
+        - action: restart
+          path: ./repos/emergency-alerts-admin/app
     restart: always
     command:
       - bash
@@ -164,6 +180,10 @@ services:
       args:
         BASE_IMAGE: localhost/eas-localenv-base
     image: localhost/eas-localenv-govuk
+    develop:
+      watch:
+        - action: restart
+          path: ./repos/emergency-alerts-govuk/app
     restart: always
     command:
       - bash
@@ -239,7 +259,6 @@ services:
     restart: always
     ports:
       - "4566:4566"
-      # - "4571:4571"
     environment:
       - SERVICES=s3,sqs,cloudwatch,ssm,ses
       - DEBUG=1
