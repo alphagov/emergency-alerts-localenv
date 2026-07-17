@@ -53,7 +53,7 @@ set +x
 echo "##[endgroup]"
 echo "##[group]Build utils and start ancillaries"
 set -x
-set -a && . environment.env && set +a
+source environment.sh
 docker compose up -d --build utils localstack pg jaeger lambda
 set +x
 
