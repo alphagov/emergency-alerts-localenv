@@ -51,9 +51,14 @@ cd ../../
 set +x
 
 echo "##[endgroup]"
-echo "##[group]Build utils and start ancillaries"
+echo "##[group]Import environment variables"
 set -x
 source environment.sh
+set +x
+
+echo "##[endgroup]"
+echo "##[group]Build utils and start ancillaries"
+set -x
 docker compose up -d --build utils localstack pg jaeger lambda
 set +x
 
