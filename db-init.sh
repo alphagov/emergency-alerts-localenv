@@ -5,7 +5,7 @@ apt install ansible postgresql-client python3-psycopg2 -y
 
 set -e
 
-source /eas/environment.sh
+source /eas/environment-container.sh
 
 psql postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@pg:5432/postgres <<-EOSQL
     CREATE DATABASE ${TEST_DATABASE}_master;
@@ -25,7 +25,7 @@ flask db upgrade
 echo "Flask done"
 
 # Now we've ran Flask migrations we reset MASTER_USERNAME to the local Postgres user (non-superuser)
-source /eas/environment.sh
+source /eas/environment-container.sh
 
 # Because the tables were created by the postgres user, they're owned by postgres, not eas-user
 # So we patch that up by adding grants after the migrations.

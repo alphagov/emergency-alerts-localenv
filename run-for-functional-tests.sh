@@ -53,7 +53,7 @@ set +x
 echo "##[endgroup]"
 echo "##[group]Import environment variables"
 set -x
-source environment.sh
+source environment-container.sh
 set +x
 
 echo "##[endgroup]"

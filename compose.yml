@@ -24,7 +24,7 @@ services:
     command:
       - bash
       - -c
-      - source /eas/environment.sh && bash /start-api.sh
+      - source /eas/environment-container.sh && bash /start-api.sh
     environment:
       SERVICE_ACTION: run_api
       DEBUGPY_PORT: "3011"
@@ -44,8 +44,8 @@ services:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
 
       - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.env:/eas/environment.env:ro,z
-      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-runtime.env:/eas/environment-runtime.env:ro,z
-      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/environment.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-runtime-container.env:/eas/environment-runtime-container.env:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-container.sh:/eas/environment-container.sh:ro,z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro,z
     depends_on:
       - pg
@@ -66,7 +66,7 @@ services:
     command:
       - bash
       - -c
-      - source /eas/environment.sh && bash /start-api.sh
+      - source /eas/environment-container.sh && bash /start-api.sh
     environment:
       SERVICE_ACTION: run_worker
       DEBUGPY_PORT: "3010"
@@ -86,8 +86,8 @@ services:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
 
       - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.env:/eas/environment.env:ro,z
-      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-runtime.env:/eas/environment-runtime.env:ro,z
-      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/environment.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-runtime-container.env:/eas/environment-runtime-container.env:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-container.sh:/eas/environment-container.sh:ro,z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro,z
     extra_hosts:
       - "api:host-gateway"
@@ -110,7 +110,7 @@ services:
     command:
       - bash
       - -c
-      - source /eas/environment.sh && bash /start-api.sh
+      - source /eas/environment-container.sh && bash /start-api.sh
     environment:
       SERVICE_ACTION: run_periodiq
 
@@ -124,8 +124,8 @@ services:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
 
       - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.env:/eas/environment.env:ro,z
-      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-runtime.env:/eas/environment-runtime.env:ro,z
-      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/environment.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-runtime-container.env:/eas/environment-runtime-container.env:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-container.sh:/eas/environment-container.sh:ro,z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-api/scripts/start-api.sh:/start-api.sh:ro,z
     extra_hosts:
       - "api:host-gateway"
@@ -148,7 +148,7 @@ services:
     command:
       - bash
       - -c
-      - source /eas/environment.sh && bash /start.sh
+      - source /eas/environment-container.sh && bash /start.sh
     ports:
       - "3012:3012"
       - "6012:6012"
@@ -157,8 +157,8 @@ services:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
 
       - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.env:/eas/environment.env:ro,z
-      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-runtime.env:/eas/environment-runtime.env:ro,z
-      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/environment.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-runtime-container.env:/eas/environment-runtime-container.env:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-container.sh:/eas/environment-container.sh:ro,z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-admin/scripts/start.sh:/start.sh:ro,z
     environment:
       DEBUGPY_PORT: "3012"
@@ -189,7 +189,7 @@ services:
       - bash
       - -c
       # GovUK doesn't have an application.py file... So we need Flask to import the 'app' module/folder instead:
-      - source /eas/environment.sh && export FLASK_APP=app && bash /start-govuk.sh
+      - source /eas/environment-container.sh && export FLASK_APP=app && bash /start-govuk.sh
     ports:
       - "3017:3017"
     environment:
@@ -205,8 +205,8 @@ services:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-utils:/eas/emergency-alerts-utils:z
 
       - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.env:/eas/environment.env:ro,z
-      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-runtime.env:/eas/environment-runtime.env:ro,z
-      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/environment.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-runtime-container.env:/eas/environment-runtime-container.env:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-container.sh:/eas/environment-container.sh:ro,z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-govuk/scripts/start-govuk.sh:/start-govuk.sh:ro,z
     extra_hosts:
       - "api:host-gateway"
@@ -224,8 +224,8 @@ services:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-tooling:/eas/emergency-alerts-tooling:z
 
       - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.env:/eas/environment.env:ro,z
-      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-runtime.env:/eas/environment-runtime.env:ro,z
-      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment.sh:/eas/environment.sh:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-runtime-container.env:/eas/environment-runtime-container.env:ro,z
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/environment-container.sh:/eas/environment-container.sh:ro,z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/db-init.sh:/eas/db-init.sh:ro,z
       - ${LOCAL_WORKSPACE_FOLDER:-.}/gen-api-key-secret.py:/eas/gen-api-key-secret.py:ro,z
     depends_on:
