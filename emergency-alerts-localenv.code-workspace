@@ -51,7 +51,7 @@
     "python.analysis.extraPaths": [
       "${workspaceFolder:emergency-alerts-localenv}/repos/emergency-alerts-utils"
     ],
-
+    // Code formatting:
     "editor.formatOnSave": true,
     "flake8.severity": {
       "F": "Warning",
@@ -60,7 +60,10 @@
     },
     "black-formatter.importStrategy": "fromEnvironment",
     "[python]": {
-      "editor.defaultFormatter": "ms-python.black-formatter"
+      "editor.defaultFormatter": "ms-python.black-formatter",
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+      },
     },
   },
 }
