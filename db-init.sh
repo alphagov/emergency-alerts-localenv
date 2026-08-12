@@ -5,10 +5,10 @@ apt install ansible postgresql-client python3-psycopg2 -y
 
 set -e
 
-. /eas/emergency-alerts-api/environment.sh
+source /eas/environment-container.sh
 
 psql postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@pg:5432/postgres <<-EOSQL
-    CREATE DATABASE $TEST_DATABASE;
+    CREATE DATABASE ${TEST_DATABASE}_master;
     CREATE DATABASE $DATABASE;
 EOSQL
 
@@ -25,7 +25,7 @@ flask db upgrade
 echo "Flask done"
 
 # Now we've ran Flask migrations we reset MASTER_USERNAME to the local Postgres user (non-superuser)
-. /eas/emergency-alerts-api/environment.sh
+source /eas/environment-container.sh
 
 # Because the tables were created by the postgres user, they're owned by postgres, not eas-user
 # So we patch that up by adding grants after the migrations.
@@ -47,6 +47,9 @@ EOSQL
 
 # Copies the population data from the bucket to the database table `populations`
 python scripts/adding_area_data/add_population_data.py
+
+# Copies the area data from the bucket to the database tables
+python scripts/adding_area_data/add_areas_data.py
 
 # Generate a secret for the API key based off the ENCRYPTION_SECRET_KEY
 FUNCTIONAL_TEST_API_KEY_SECRET=$(python /eas/gen-api-key-secret.py)
