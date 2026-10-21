@@ -270,14 +270,14 @@ services:
       - pg
 
   pg:
-    image: postgis/postgis:14-3.5
+    image: postgis/postgis:18-3.6
     platform: linux/amd64
     restart: always
     environment:
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
     volumes:
-      - pg-data:/var/lib/postgresql/data
+      - pg-data:/var/lib/postgresql
     ports:
       - 5432:5432
 
