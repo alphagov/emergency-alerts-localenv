@@ -44,7 +44,7 @@ Running on Linux? Make sure the repos have rw for everyone - as the containers r
 > make generate-version-file
 > cd ../emergency-alerts-admin
 > # and copy the small test DB instead of the large one (this will semi-break area selection)
-> make generate-version-file && npm ci && npm run build && cp app/broadcast_areas/broadcast-areas-test.sqlite3 app/broadcast_areas/broadcast-areas.sqlite3
+> make generate-version-file && npm ci && npm run build
 > ```
 
 For proper development you'll want to create a Python virtual environment in each repo and install Python dependencies (and build Node components too)

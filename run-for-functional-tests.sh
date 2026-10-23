@@ -45,7 +45,7 @@ make generate-version-file && npm ci && npm run build
 cd ../emergency-alerts-api
 make generate-version-file
 cd ../emergency-alerts-admin
-make generate-version-file && npm ci && npm run build && cp app/broadcast_areas/broadcast-areas-test.sqlite3 app/broadcast_areas/broadcast-areas.sqlite3
+make generate-version-file && npm ci && npm run build
 # Back to root of this repo
 cd ../../
 set +x
