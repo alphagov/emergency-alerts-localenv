@@ -78,7 +78,12 @@ echo "##[endgroup]"
 echo "##[group]Build and start other containers"
 set -x
 # We haven't built admin and govuk yet, so this'll do that while db-init is running in the background
-docker compose up -d
+docker compose up -d \
+  admin \
+  govuk \
+  api-worker \
+  api-periodiq \
+  api-dlq-watcher
 set +x
 
 echo "##[endgroup]"
