@@ -49,7 +49,7 @@ EOSQL
 python scripts/adding_area_data/add_population_data.py
 
 # Copies the area data from the bucket to the database tables
-python scripts/adding_area_data/add_areas_data.py
+flask command add-areas
 
 # Generate a secret for the API key based off the ENCRYPTION_SECRET_KEY
 FUNCTIONAL_TEST_API_KEY_SECRET=$(python /eas/gen-api-key-secret.py)

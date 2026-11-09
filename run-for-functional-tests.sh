@@ -45,7 +45,7 @@ make generate-version-file && npm ci && npm run build
 cd ../emergency-alerts-api
 make generate-version-file
 cd ../emergency-alerts-admin
-make generate-version-file && npm ci && npm run build && cp app/broadcast_areas/broadcast-areas-test.sqlite3 app/broadcast_areas/broadcast-areas.sqlite3
+make generate-version-file && npm ci && npm run build
 # Back to root of this repo
 cd ../../
 set +x
@@ -78,7 +78,12 @@ echo "##[endgroup]"
 echo "##[group]Build and start other containers"
 set -x
 # We haven't built admin and govuk yet, so this'll do that while db-init is running in the background
-docker compose up -d
+docker compose up -d \
+  admin \
+  govuk \
+  api-worker \
+  api-periodiq \
+  api-dlq-watcher
 set +x
 
 echo "##[endgroup]"
