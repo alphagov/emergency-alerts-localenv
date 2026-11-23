@@ -28,6 +28,7 @@ services:
     environment:
       SERVICE_ACTION: run_api
       DEBUGPY_PORT: "3011"
+      GUNICORN_OPTS: --timeout 0 # Disable timeout so that debugging isn't interrupted
 
       AWS_ENDPOINT_URL_LAMBDA: http://lambda:5000
 
@@ -200,6 +201,7 @@ services:
       - ${LOCAL_WORKSPACE_FOLDER:-.}/repos/emergency-alerts-admin/scripts/start.sh:/start.sh:ro,z
     environment:
       DEBUGPY_PORT: "3012"
+      GUNICORN_OPTS: --timeout 0 # Disable timeout so that debugging isn't interrupted
 
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://jaeger:4318/v1/traces
       OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
